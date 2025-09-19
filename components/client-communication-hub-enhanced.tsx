@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,7 +17,8 @@ import {
   Edit3,
   Trash2,
   RefreshCw,
-  Save
+  Save,
+  CheckCircle2
 } from "lucide-react"
 
 interface Appointment {
@@ -51,6 +52,46 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
   const [loadingAppointments, setLoadingAppointments] = useState<Record<string, boolean>>({})
   const [showEmailDialog, setShowEmailDialog] = useState(false)
   const [currentDraftId, setCurrentDraftId] = useState<string | null>(null)
+  const [lastSaved, setLastSaved] = useState<string>("")
+
+  // Load drafts from localStorage on component mount
+  useEffect(() => {
+    const loadDrafts = () => {
+      try {
+        const savedDrafts = localStorage.getItem('vetscribe-email-drafts')
+        if (savedDrafts) {
+          const parsedDrafts = JSON.parse(savedDrafts)
+          // Filter out drafts older than 7 days to prevent clutter
+          const sevenDaysAgo = new Date()
+          sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+          
+          const filteredDrafts = Object.entries(parsedDrafts).reduce((acc, [key, draft]) => {
+            const draftDate = new Date((draft as EmailDraft).lastModified)
+            if (draftDate > sevenDaysAgo) {
+              acc[key] = draft as EmailDraft
+            }
+            return acc
+          }, {} as Record<string, EmailDraft>)
+          
+          setEmailDrafts(filteredDrafts)
+        }
+      } catch (error) {
+        console.error('Error loading email drafts:', error)
+      }
+    }
+    
+    loadDrafts()
+  }, [])
+
+  // Save drafts to localStorage whenever emailDrafts changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('vetscribe-email-drafts', JSON.stringify(emailDrafts))
+      setLastSaved(new Date().toLocaleTimeString())
+    } catch (error) {
+      console.error('Error saving email drafts:', error)
+    }
+  }, [emailDrafts])
 
   const generateOrOpenEmail = async (appointment: Appointment) => {
     // Check if draft already exists
@@ -208,7 +249,7 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
               Email Drafts ({draftsArray.length})
             </CardTitle>
             <p className="text-sm text-muted-foreground">
-              Manage and edit your generated emails before sending
+              Manage and edit your generated emails before sending. Drafts are automatically saved and persist between sessions.
             </p>
           </CardHeader>
           <CardContent>
@@ -384,8 +425,14 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
                 />
               </div>
               
-              <div className="text-xs text-muted-foreground">
-                Last modified: {new Date(currentDraft.lastModified).toLocaleString()}
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Last modified: {new Date(currentDraft.lastModified).toLocaleString()}</span>
+                {lastSaved && (
+                  <div className="flex items-center gap-1 text-green-600">
+                    <CheckCircle2 className="h-3 w-3" />
+                    <span>Auto-saved at {lastSaved}</span>
+                  </div>
+                )}
               </div>
             </div>
           )}
