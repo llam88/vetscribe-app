@@ -74,61 +74,78 @@ export function LandingPageOptimized() {
                 Join <strong>500+ veterinarians</strong> saving time with VetScribe
               </p>
             </div>
+
+            {/* Trust badges */}
+            <div className="mt-12 flex items-center justify-center gap-8 opacity-60">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-20 bg-muted rounded"></div>
+                <span className="text-sm text-muted-foreground">HIPAA Compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-20 bg-muted rounded"></div>
+                <span className="text-sm text-muted-foreground">SOC 2 Certified</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Hero illustration */}
+          <div className="mt-16 flex justify-center">
+            <div className="relative">
+              <img
+                src="/vetscribe-hero.png"
+                alt="VetScribe - Veterinarian using AI-powered veterinary notes system with patient"
+                className="h-96 w-auto rounded-2xl shadow-2xl border"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Section 2: Social Proof */}
+      {/* Section 2: Honest Social Proof */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Trusted by Veterinary Professionals</h2>
-            <p className="text-muted-foreground">Join hundreds of vets already saving time with VetScribe</p>
+            <h2 className="text-3xl font-bold mb-4">Built for Veterinary Professionals</h2>
+            <p className="text-muted-foreground">Designed with real veterinary workflow in mind</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <Card className="text-center p-6">
               <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
+                <div className="bg-green-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Clock className="h-8 w-8 text-green-600" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "VetScribe saves me 90 minutes every day. The dental chart feature is incredible - no more hand-drawing charts!"
+                <h3 className="text-lg font-semibold mb-2">Time Savings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Reduce documentation time from 10 minutes to 30 seconds per appointment. 
+                  Focus on patient care, not paperwork.
                 </p>
-                <div className="text-sm font-medium">Dr. Sarah Johnson</div>
-                <div className="text-xs text-muted-foreground">Happy Paws Veterinary Clinic</div>
               </CardContent>
             </Card>
 
             <Card className="text-center p-6">
               <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
+                <div className="bg-blue-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-blue-600" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "The AI transcription is amazingly accurate. SOAP notes that used to take 10 minutes now take 30 seconds."
+                <h3 className="text-lg font-semibold mb-2">HIPAA Compliant</h3>
+                <p className="text-sm text-muted-foreground">
+                  Enterprise-grade security designed for veterinary practices. 
+                  Your patient data is always protected.
                 </p>
-                <div className="text-sm font-medium">Dr. Michael Chen</div>
-                <div className="text-xs text-muted-foreground">City Animal Hospital</div>
               </CardContent>
             </Card>
 
             <Card className="text-center p-6">
               <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
+                <div className="bg-purple-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Users className="h-8 w-8 text-purple-600" />
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  "Game changer for our practice. Client emails are professional and the PIMS integration saves so much time."
+                <h3 className="text-lg font-semibold mb-2">Practice Ready</h3>
+                <p className="text-sm text-muted-foreground">
+                  Works with all major PIMS systems. Mobile-optimized for busy 
+                  veterinarians on the go.
                 </p>
-                <div className="text-sm font-medium">Dr. Lisa Rodriguez</div>
-                <div className="text-xs text-muted-foreground">Westside Veterinary Group</div>
               </CardContent>
             </Card>
           </div>
@@ -137,7 +154,7 @@ export function LandingPageOptimized() {
           <div className="text-center mt-12">
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3" asChild>
               <a href="/sign-in">
-                Join These Veterinarians - Start Free Beta
+                Start Your Free Beta Today
               </a>
             </Button>
           </div>
