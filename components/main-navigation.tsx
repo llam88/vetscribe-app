@@ -31,6 +31,7 @@ const navigationItems: NavigationItem[] = [
   { href: "/appointments", label: "Appointments", icon: Calendar },
   { href: "/patients", label: "Patients", icon: Users },
   { href: "/communication", label: "Communication", icon: Mail },
+  { href: "/templates", label: "Templates", icon: FileText, badge: "New" },
   { href: "/settings", label: "Settings", icon: Settings }
 ]
 

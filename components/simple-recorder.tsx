@@ -19,6 +19,8 @@ import {
   Clock
 } from "lucide-react"
 import { createClientBrowser } from "@/lib/supabase-browser"
+import { SOAPTemplateManager } from "@/components/soap-template-manager"
+import { defaultSOAPTemplates, type SOAPTemplate } from "@/data/soap-templates"
 
 interface SimpleRecorderProps {
   appointment: any
@@ -55,6 +57,10 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   
   // Manual transcription
   const [manualTranscription, setManualTranscription] = useState("")
+  
+  // Template selection
+  const [showTemplateSelector, setShowTemplateSelector] = useState(false)
+  const [selectedTemplate, setSelectedTemplate] = useState<SOAPTemplate | null>(null)
   
   // Check for dental keywords on component load if SOAP already exists
   useEffect(() => {
@@ -247,7 +253,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }
 
-  const generateSOAP = async () => {
+  const generateSOAP = async (template?: SOAPTemplate) => {
     if (!transcription) {
       alert('Generate transcription first')
       return
@@ -265,14 +271,15 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
             species: appointment.species,
             owner: appointment.owner_name
           },
-          visitType: appointment.appointment_type
+          visitType: appointment.appointment_type,
+          template: template ? template.template : undefined
         })
       })
       
       const result = await response.json()
       const newSOAP = result.note || ""
       
-      console.log('Generated SOAP note with', newSOAP.length, 'characters')
+      console.log('Generated SOAP note with', newSOAP.length, 'characters', template ? `using template: ${template.name}` : 'without template')
       
       // FORCE UI UPDATE
       setSoapNote(newSOAP)
@@ -304,9 +311,10 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         console.warn('Database save failed, but SOAP note is still available:', dbError)
       }
       
+      const templateMessage = template ? ` using ${template.name} template` : ''
       alert(hasDentalKeywords 
-        ? `✅ SOAP note generated! 🦷 Dental procedures detected - you can now generate a dental chart.`
-        : `✅ SOAP note generated! ${newSOAP.length} characters created.`)
+        ? `✅ SOAP note generated${templateMessage}! 🦷 Dental procedures detected - you can now generate a dental chart.`
+        : `✅ SOAP note generated${templateMessage}! ${newSOAP.length} characters created.`)
       
     } catch (error) {
       console.error('SOAP generation error:', error)
@@ -314,6 +322,12 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleTemplateSelect = (template: SOAPTemplate) => {
+    setSelectedTemplate(template)
+    setShowTemplateSelector(false)
+    generateSOAP(template)
   }
 
   const generateDentalChart = async () => {
@@ -723,9 +737,14 @@ Example:
                     <Copy className="h-4 w-4 mr-2" />
                     Copy Transcription
                   </Button>
-                  <Button onClick={generateSOAP} disabled={loading}>
-                    {loading ? "🔄 Generating..." : "📋 Generate SOAP Note"}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button onClick={() => generateSOAP()} disabled={loading}>
+                      {loading ? "🔄 Generating..." : "📋 Generate SOAP Note"}
+                    </Button>
+                    <Button onClick={() => setShowTemplateSelector(true)} disabled={loading} variant="outline">
+                      📋 Use Template
+                    </Button>
+                  </div>
                   <Button onClick={generateClientSummary} disabled={loading} variant="outline">
                     {loading ? "🔄 Generating..." : "📧 Generate Client Summary"}
                   </Button>
@@ -832,9 +851,14 @@ Example:
                 <p className="text-lg">No SOAP note yet</p>
                 <p className="text-sm">Generate transcription first, then click "Generate SOAP Note"</p>
                 {transcription && (
-                  <Button onClick={generateSOAP} disabled={loading} className="mt-4">
-                    {loading ? "🔄 Generating SOAP Note..." : "📋 Generate SOAP Note"}
-                  </Button>
+                  <div className="flex gap-2 mt-4">
+                    <Button onClick={() => generateSOAP()} disabled={loading}>
+                      {loading ? "🔄 Generating SOAP Note..." : "📋 Generate SOAP Note"}
+                    </Button>
+                    <Button onClick={() => setShowTemplateSelector(true)} disabled={loading} variant="outline">
+                      📋 Use Template
+                    </Button>
+                  </div>
                 )}
               </div>
             )}
@@ -1251,6 +1275,35 @@ Example:
             </div>
         </CardContent>
       </Card>
+
+      {/* Template Selector Dialog */}
+      <Dialog open={showTemplateSelector} onOpenChange={setShowTemplateSelector}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Select SOAP Note Template
+            </DialogTitle>
+            <DialogDescription>
+              Choose a professional template to structure your SOAP note generation
+            </DialogDescription>
+          </DialogHeader>
+          
+          <SOAPTemplateManager 
+            showSelector={true}
+            onSelectTemplate={handleTemplateSelect}
+          />
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowTemplateSelector(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => generateSOAP()} disabled={loading}>
+              Generate Without Template
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

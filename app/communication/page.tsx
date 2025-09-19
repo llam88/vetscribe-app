@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClientServer } from "@/lib/supabase-server"
-import { ClientCommunicationHub } from "@/components/client-communication-hub"
+import { ClientCommunicationHubEnhanced } from "@/components/client-communication-hub-enhanced"
 import { NavigationBreadcrumb } from "@/components/navigation-breadcrumb"
 import { MainNavigation } from "@/components/main-navigation"
 
@@ -36,7 +36,7 @@ export default async function CommunicationPage() {
             Generate and send professional emails to pet owners based on appointment notes
           </p>
         </div>
-        <ClientCommunicationHub appointments={appointments || []} />
+        <ClientCommunicationHubEnhanced appointments={appointments || []} />
       </div>
     </div>
   )

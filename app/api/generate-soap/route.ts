@@ -26,8 +26,41 @@ Appointment Notes (verbatim transcript):
 ${transcription}
 `.trim()
 
-    const basePrompt = `
-Organize the provided appointment notes into strict ${template?.label || "SOAP"} format.
+    let basePrompt = ""
+    
+    if (template) {
+      // Use professional template structure
+      basePrompt = `
+You are a professional veterinary scribe. Use the provided template structure to create a comprehensive SOAP note.
+
+TEMPLATE STRUCTURE:
+SUBJECTIVE:
+${template.subjective}
+
+OBJECTIVE:
+${template.objective}
+
+ASSESSMENT:
+${template.assessment}
+
+PLAN:
+${template.plan}
+
+INSTRUCTIONS:
+- Fill in the template placeholders (e.g., [PATIENT_NAME], [TEMP], [FINDINGS]) with actual information from the transcript
+- Use "Not documented" for any placeholders where information is not available
+- Keep the professional structure but adapt content to match the actual appointment
+- Replace bracketed placeholders with real values from the appointment notes
+
+Patient Information:
+${signalment}
+
+Create a complete SOAP note using this template structure:
+`.trim()
+    } else {
+      // Use standard SOAP format
+      basePrompt = `
+Organize the provided appointment notes into strict SOAP format.
 
 CRITICAL RULES:
 - SUBJECTIVE: client-reported history/symptoms only
@@ -40,8 +73,9 @@ CRITICAL RULES:
 Input:
 ${signalment}
 
-Output a complete ${template?.label || "SOAP"} note:
+Output a complete SOAP note:
 `.trim()
+    }
 
     const resp = await openai.chat.completions.create({
       model: "gpt-4o-mini",

@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation"
 import { createClientServer } from "@/lib/supabase-server"
-import TemplatesPicker from "@/components/TemplatesPicker"
+import { SOAPTemplateManager } from "@/components/soap-template-manager"
+import { NavigationBreadcrumb } from "@/components/navigation-breadcrumb"
+import { MainNavigation } from "@/components/main-navigation"
 
 export default async function TemplatesPage() {
   const sb = await createClientServer()
@@ -8,10 +10,12 @@ export default async function TemplatesPage() {
   if (!user) redirect("/sign-in")
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-4">
-      <h1 className="text-xl font-semibold">Templates</h1>
-      <p className="text-gray-600 text-sm">Pick a default template on the Record page; this page just previews your options.</p>
-      <TemplatesPicker onChange={() => {}} />
+    <div className="min-h-screen bg-background">
+      <MainNavigation />
+      <div className="p-6 max-w-6xl mx-auto">
+        <NavigationBreadcrumb currentPage="SOAP Templates" />
+        <SOAPTemplateManager />
+      </div>
     </div>
   )
 }

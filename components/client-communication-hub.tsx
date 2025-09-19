@@ -32,14 +32,31 @@ interface ClientCommunicationHubProps {
   appointments: Appointment[]
 }
 
+interface EmailDraft {
+  appointmentId: string
+  subject: string
+  body: string
+  recipientEmail: string
+  patientName: string
+  ownerName: string
+}
+
 export function ClientCommunicationHub({ appointments }: ClientCommunicationHubProps) {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
-  const [generatedEmail, setGeneratedEmail] = useState("")
+  const [emailDrafts, setEmailDrafts] = useState<Record<string, EmailDraft>>({})
   const [loadingAppointments, setLoadingAppointments] = useState<Record<string, boolean>>({})
-  const [emailSubject, setEmailSubject] = useState("")
-  const [recipientEmail, setRecipientEmail] = useState("")
+  const [showEmailDialog, setShowEmailDialog] = useState(false)
+  const [currentDraftId, setCurrentDraftId] = useState<string | null>(null)
 
-  const generateClientEmail = async (appointment: Appointment) => {
+  const generateOrOpenEmail = async (appointment: Appointment) => {
+    // Check if draft already exists
+    const existingDraft = emailDrafts[appointment.id]
+    if (existingDraft) {
+      setCurrentDraftId(appointment.id)
+      setShowEmailDialog(true)
+      return
+    }
+
     if (!appointment.soap_note && !appointment.client_summary) {
       alert('Generate SOAP notes or client summary first')
       return
@@ -65,8 +82,19 @@ export function ClientCommunicationHub({ appointments }: ClientCommunicationHubP
       const result = await response.json()
       
       if (result.success) {
-        setGeneratedEmail(result.email)
-        setEmailSubject(`${appointment.patient_name}'s Visit Summary`)
+        // Create new draft
+        const newDraft: EmailDraft = {
+          appointmentId: appointment.id,
+          subject: `${appointment.patient_name}'s Visit Summary`,
+          body: result.email,
+          recipientEmail: '',
+          patientName: appointment.patient_name,
+          ownerName: appointment.owner_name
+        }
+        
+        setEmailDrafts(prev => ({ ...prev, [appointment.id]: newDraft }))
+        setCurrentDraftId(appointment.id)
+        setShowEmailDialog(true)
       } else {
         alert('Error generating email')
       }
