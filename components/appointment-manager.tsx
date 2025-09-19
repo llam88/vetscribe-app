@@ -436,13 +436,13 @@ Your Veterinary Team`
                   </div>
 
                   {/* Actions */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                     {/* Primary action: Record if not started, Continue if in progress */}
                     {!appointment.transcription ? (
                       <Button 
                         asChild
                         size="sm"
-                        className="bg-red-500 hover:bg-red-600 text-white"
+                        className="bg-red-500 hover:bg-red-600 text-white w-full sm:w-auto"
                       >
                         <a href={`/appointments/${appointment.id}/record`}>
                           <Mic className="h-4 w-4 mr-2" />
@@ -454,6 +454,7 @@ Your Veterinary Team`
                         asChild
                         size="sm"
                         variant="outline"
+                        className="w-full sm:w-auto"
                       >
                         <a href={`/appointments/${appointment.id}/record`}>
                           <FileText className="h-4 w-4 mr-2" />
@@ -462,17 +463,19 @@ Your Veterinary Team`
                       </Button>
                     )}
                     
-                    <Button 
-                      asChild
-                      variant="ghost" 
-                      size="sm"
-                    >
-                      <a href={`/appointments/${appointment.id}`}>
-                        <Eye className="h-4 w-4" />
-                      </a>
-                    </Button>
-                    
-                    <Dialog>
+                    {/* Secondary actions - keep horizontal on mobile */}
+                    <div className="flex items-center gap-2 justify-center sm:justify-start">
+                      <Button 
+                        asChild
+                        variant="ghost" 
+                        size="sm"
+                      >
+                        <a href={`/appointments/${appointment.id}`}>
+                          <Eye className="h-4 w-4" />
+                        </a>
+                      </Button>
+                      
+                      <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="ghost" size="sm">
                           <MoreHorizontal className="h-4 w-4" />
@@ -546,6 +549,7 @@ Your Veterinary Team`
                         </div>
                       </DialogContent>
                     </Dialog>
+                    </div>
                   </div>
                 </div>
               </CardContent>
