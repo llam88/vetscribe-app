@@ -24,19 +24,19 @@ export function LandingPageOptimized() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             {/* Beta Banner */}
-            <div className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Badge className="bg-green-100 text-green-800">
+            <div className="mb-12 bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-6">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Badge className="bg-primary text-primary-foreground px-4 py-1">
                   🚀 FREE BETA
                 </Badge>
-                <Badge className="bg-blue-100 text-blue-800">
+                <Badge variant="outline" className="border-primary text-primary">
                   Limited Time
                 </Badge>
               </div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-base font-medium text-foreground text-center">
                 VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-2 text-center">
                 <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
               </p>
             </div>
@@ -51,17 +51,11 @@ export function LandingPageOptimized() {
             </p>
 
             {/* Primary CTA */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg" asChild>
+            <div className="mt-10 flex items-center justify-center">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg" asChild>
                 <a href="/sign-in">
                   🚀 Start Free Beta Access
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="px-8 py-4 text-lg" asChild>
-                <a href="#demo">
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch 2-Min Demo
                 </a>
               </Button>
             </div>
@@ -152,7 +146,7 @@ export function LandingPageOptimized() {
 
           {/* CTA 2 */}
           <div className="text-center mt-12">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3" asChild>
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
               <a href="/sign-in">
                 Start Your Free Beta Today
               </a>
@@ -215,7 +209,7 @@ export function LandingPageOptimized() {
 
           {/* CTA 3 */}
           <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="px-8 py-3" asChild>
+            <Button size="lg" variant="outline" className="px-8 py-3 border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
               <a href="/sign-in">
                 Try the Complete Workflow - Free Beta
               </a>
@@ -357,7 +351,7 @@ export function LandingPageOptimized() {
 
           {/* CTA 4 */}
           <div className="text-center mt-12">
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3" asChild>
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
               <a href="/sign-in">
                 Get All Features Free During Beta
               </a>
@@ -366,130 +360,76 @@ export function LandingPageOptimized() {
         </div>
       </section>
 
-      {/* Section 6: Early Access Pricing */}
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-purple-50">
+      {/* Section 6: Clear Pricing Strategy */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Founder Pricing - Limited Time</h2>
-            <p className="text-muted-foreground">Lock in special pricing before we launch publicly</p>
+            <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-muted-foreground">Free during beta, then affordable monthly pricing</p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Beta Access */}
-              <Card className="relative border-2 border-green-200 bg-green-50">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-green-600 text-white px-4 py-1">
-                    CURRENT OFFER
-                  </Badge>
+          <div className="max-w-3xl mx-auto">
+            <Card className="relative border-2 border-primary bg-background">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <Badge className="bg-primary text-primary-foreground px-6 py-2 text-sm font-semibold">
+                  🚀 FREE BETA ACCESS
+                </Badge>
+              </div>
+              <CardContent className="pt-12 pb-8">
+                <div className="text-center">
+                  <h3 className="text-3xl font-bold mb-4">Currently Free</h3>
+                  <div className="text-6xl font-bold text-primary mb-2">$0</div>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    Complete access to all VetScribe features during beta
+                  </p>
+                  
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+                    <h4 className="font-semibold text-blue-900 mb-4">What happens after beta?</h4>
+                    <div className="grid md:grid-cols-2 gap-6 text-left">
+                      <div>
+                        <div className="text-2xl font-bold text-gray-600 mb-2">$79/month</div>
+                        <p className="text-sm text-gray-600">Standard pricing for new users</p>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-primary mb-2">$39/month</div>
+                        <p className="text-sm text-primary font-medium">Your price as beta user (50% off forever)</p>
+                      </div>
+                    </div>
+                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+                      <p className="text-sm text-green-800 font-medium">
+                        💡 Lock in 50% off for life by joining the beta now
+                      </p>
+                    </div>
+                  </div>
+
+                  <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg" asChild>
+                    <a href="/sign-in">
+                      🚀 Secure Your Founder Pricing
+                    </a>
+                  </Button>
+                  
+                  <p className="text-xs text-muted-foreground mt-4">
+                    ✅ No credit card required • ✅ Cancel anytime • ✅ Founder pricing guaranteed
+                  </p>
                 </div>
-                <CardContent className="pt-8 pb-8">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold mb-2">Free Beta Access</h3>
-                    <div className="text-4xl font-bold text-green-600 mb-4">$0/month</div>
-                    <p className="text-sm text-muted-foreground mb-6">
-                      Complete access to all features during beta period
-                    </p>
-                    
-                    <ul className="text-left space-y-3 mb-8">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-sm">Unlimited appointments & recordings</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-sm">AI SOAP notes & dental charts</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-sm">Client communication tools</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-sm">PIMS integration</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
-                        <span className="text-sm"><strong>50% off for life</strong> when pricing launches</span>
-                      </li>
-                    </ul>
-
-                    <Button size="lg" className="w-full bg-green-600 hover:bg-green-700 text-white" asChild>
-                      <a href="/sign-in">
-                        🚀 Start Free Beta Now
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Future Pricing */}
-              <Card className="border-2 border-gray-200">
-                <CardContent className="pt-8 pb-8">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold mb-2">Future Pricing</h3>
-                    <div className="text-4xl font-bold text-gray-600 mb-4">$79/month</div>
-                    <p className="text-sm text-muted-foreground mb-6">
-                      Standard pricing after beta period ends
-                    </p>
-                    
-                    <ul className="text-left space-y-3 mb-8">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm">All current features</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm">Priority support</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm">Advanced analytics</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm">Team collaboration</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Zap className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm"><strong>Early adopters pay $39.50/month</strong></span>
-                      </li>
-                    </ul>
-
-                    <Button size="lg" variant="outline" className="w-full" disabled>
-                      Available After Beta
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mt-8">
-              <p className="text-sm text-muted-foreground">
-                💡 <strong>Smart Strategy:</strong> Sign up for free beta now, get 50% off forever when pricing launches
-              </p>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Section 7: Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+      <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Practice?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Save 60+ Minutes Daily?</h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Join hundreds of veterinarians already saving 60+ minutes daily with VetScribe AI
+            Join the free beta and lock in 50% off for life when pricing launches
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold" asChild>
+          <div className="flex items-center justify-center mb-8">
+            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 px-12 py-4 text-lg font-semibold" asChild>
               <a href="/sign-in">
                 🚀 Start Free Beta - 2 Minute Setup
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600 px-8 py-4" asChild>
-              <a href="mailto:hello@vetscribe.com">
-                📧 Questions? Contact Us
               </a>
             </Button>
           </div>
