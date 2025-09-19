@@ -27,56 +27,64 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
   const [currentStep, setCurrentStep] = useState(0)
   const [showWelcome, setShowWelcome] = useState(true)
 
+  // Calculate real completion based on actual data
+  const hasAppointments = appointments && appointments.length > 0
+  const hasRecordings = appointments && appointments.some((a: any) => a.transcription)
+  const hasSOAPNotes = appointments && appointments.some((a: any) => a.soap_note)
+  const hasEmailDrafts = typeof window !== 'undefined' && localStorage.getItem('vetscribe-email-drafts')
+  const hasEmailConfig = typeof window !== 'undefined' && localStorage.getItem('vetscribe-user-email-config')
+
   const steps: OnboardingStep[] = [
     {
-      id: "record",
-      title: "Create Your First Recording",
-      description: "Try our unlimited-duration recording system",
-      icon: Mic,
-      href: "/record",
-      completed: completedSteps.includes("record"),
+      id: "appointment",
+      title: "Create Your First Appointment",
+      description: "Schedule a patient visit to get started",
+      icon: Plus,
+      href: "/appointments",
+      completed: hasAppointments,
       isActive: currentStep === 0
     },
     {
-      id: "patient",
-      title: "Add a Patient",
-      description: "Build your patient database",
-      icon: Users,
-      href: "/patients",
-      completed: completedSteps.includes("patient"),
+      id: "record",
+      title: "Record & Transcribe",
+      description: "Try our AI-powered transcription system",
+      icon: Mic,
+      href: hasAppointments ? `/appointments/${appointments[0]?.id}/record` : "/appointments",
+      completed: hasRecordings,
       isActive: currentStep === 1
     },
     {
-      id: "appointment",
-      title: "Manage Appointments", 
-      description: "View and organize your appointments",
+      id: "soap",
+      title: "Generate SOAP Notes",
+      description: "Create professional veterinary documentation",
       icon: FileText,
-      href: "/appointments",
-      completed: completedSteps.includes("appointment"),
+      href: hasAppointments ? `/appointments/${appointments[0]?.id}/record` : "/appointments",
+      completed: hasSOAPNotes,
       isActive: currentStep === 2
     },
     {
       id: "communication",
-      title: "Client Communication",
-      description: "Send professional summaries to pet owners",
+      title: "Send Client Emails",
+      description: "Generate and send professional client communications",
       icon: Mail,
       href: "/communication",
-      completed: completedSteps.includes("communication"),
+      completed: !!hasEmailDrafts,
       isActive: currentStep === 3
     },
     {
       id: "settings",
-      title: "Configure Features",
-      description: "Enable dental charts and other advanced features",
+      title: "Configure Email Settings",
+      description: "Set up your email provider for direct sending",
       icon: Play,
       href: "/settings",
-      completed: completedSteps.includes("settings"),
+      completed: !!hasEmailConfig,
       isActive: currentStep === 4
     }
   ]
 
   const completedCount = steps.filter(step => step.completed).length
   const progressPercent = (completedCount / steps.length) * 100
+  const nextIncompleteStep = steps.find(step => !step.completed)
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -184,9 +192,26 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
               <Progress value={progressPercent} className="h-2" />
             </div>
             
-            <div className="text-sm text-muted-foreground">
-              Complete all steps to experience the full power of VetScribe AI for your veterinary practice.
-            </div>
+            {nextIncompleteStep ? (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium text-blue-900">Next Step:</h4>
+                    <p className="text-sm text-blue-700">{nextIncompleteStep.title}</p>
+                  </div>
+                  <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <a href={nextIncompleteStep.href}>
+                      Start Now
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                <h4 className="font-medium text-green-900">🎉 All steps completed!</h4>
+                <p className="text-sm text-green-700">You've experienced the full power of VetScribe AI!</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
