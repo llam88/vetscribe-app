@@ -86,38 +86,6 @@ export default function SignInPage() {
     }
   }
 
-  const signInWithMicrosoft = async () => {
-    try {
-      setLoading(true)
-      const { error } = await sb.auth.signInWithOAuth({
-        provider: 'azure',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          scopes: 'email profile'
-        }
-      })
-
-      if (error) {
-        console.error('Microsoft sign-in error:', error)
-        toast({
-          title: "❌ Microsoft Sign-In Failed",
-          description: error.message,
-          variant: "destructive",
-          duration: 5000,
-        })
-      }
-    } catch (error: any) {
-      console.error('Microsoft OAuth error:', error)
-      toast({
-        title: "❌ Sign-In Error",
-        description: "Error with Microsoft sign-in. Please try again.",
-        variant: "destructive",
-        duration: 5000,
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
 
   async function sendMagic() {
     if (!email) return
@@ -311,19 +279,6 @@ export default function SignInPage() {
                 <span className="text-sm font-medium">Continue with Google</span>
               </button>
 
-              <button
-                onClick={signInWithMicrosoft}
-                disabled={loading}
-                className="flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-              >
-                <svg className="h-5 w-5" viewBox="0 0 24 24">
-                  <path fill="#f25022" d="M11.4 0H0v11.4h11.4V0z"/>
-                  <path fill="#00a1f1" d="M24 0H12.6v11.4H24V0z"/>
-                  <path fill="#7fba00" d="M11.4 12.6H0V24h11.4V12.6z"/>
-                  <path fill="#ffb900" d="M24 12.6H12.6V24H24V12.6z"/>
-                </svg>
-                <span className="text-sm font-medium">Continue with Microsoft</span>
-              </button>
             </div>
             
             {error && (
