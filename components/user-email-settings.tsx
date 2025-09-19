@@ -64,24 +64,39 @@ export function UserEmailSettings() {
     try {
       setLoading(true)
       const { data: { user } } = await sb.auth.getUser()
-      if (!user) return
+      if (!user) {
+        alert('❌ Please sign in to save email settings')
+        return
+      }
 
-      const { error } = await sb
+      console.log('Saving email config:', emailConfig)
+
+      const { data, error } = await sb
         .from('profiles')
         .upsert({
           id: user.id,
+          email: user.email,
           email_config: emailConfig,
           updated_at: new Date().toISOString()
         })
+        .select()
 
-      if (error) throw error
+      if (error) {
+        console.error('Supabase error:', error)
+        if (error.message.includes('relation "public.profiles" does not exist')) {
+          alert('❌ Database not set up yet. Please run the database setup script in Supabase first.')
+          return
+        }
+        throw error
+      }
 
+      console.log('Email settings saved:', data)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
       alert('✅ Email settings saved successfully!')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving email settings:', error)
-      alert('❌ Error saving settings. Please try again.')
+      alert(`❌ Error saving settings: ${error.message || 'Please try again.'}`)
     } finally {
       setLoading(false)
     }
@@ -89,13 +104,25 @@ export function UserEmailSettings() {
 
   const testEmailSetup = async () => {
     if (emailConfig.provider === 'none') {
-      alert('Please configure an email provider first')
+      alert('Please select and configure an email provider first')
+      return
+    }
+
+    if (emailConfig.provider === 'resend' && !emailConfig.apiKey) {
+      alert('Please enter your Resend API key first')
+      return
+    }
+
+    if (emailConfig.provider === 'gmail' && (!emailConfig.fromEmail || !emailConfig.smtpPassword)) {
+      alert('Please enter both Gmail address and app password first')
       return
     }
 
     try {
       setTesting(true)
       setTestResult("")
+
+      console.log('Testing email config:', { provider: emailConfig.provider, hasApiKey: !!emailConfig.apiKey })
 
       const response = await fetch('/api/test-user-email', {
         method: 'POST',
@@ -107,17 +134,19 @@ export function UserEmailSettings() {
       })
 
       const result = await response.json()
+      console.log('Test result:', result)
       
       if (result.success) {
-        setTestResult("✅ Email test successful! Your configuration is working.")
-        alert('✅ Test email sent successfully!')
+        setTestResult("✅ Email configuration is valid! Your setup is working.")
+        alert('✅ Email configuration test passed!')
       } else {
         setTestResult(`❌ Test failed: ${result.error}`)
         alert(`❌ Test failed: ${result.error}`)
       }
     } catch (error) {
+      console.error('Test email error:', error)
       setTestResult("❌ Error testing email setup")
-      alert('❌ Error testing email setup')
+      alert('❌ Error testing email setup. Check console for details.')
     } finally {
       setTesting(false)
     }
