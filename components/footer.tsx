@@ -48,8 +48,8 @@ export function Footer() {
             <h3 className="font-semibold text-foreground mb-4">Get Started</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/dashboard" className="hover:text-foreground transition-colors">
-                  🚀 Try VetScribe Now
+                <Link href="/sign-in" className="hover:text-foreground transition-colors">
+                  🚀 Start Free Beta
                 </Link>
               </li>
               <li>
@@ -71,10 +71,23 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">© 2024 VetScribe. All rights reserved.</p>
-          <div className="flex items-center gap-4 mt-4 sm:mt-0">
-            <span className="text-sm text-muted-foreground">Made with ❤️ for veterinarians</span>
+        <div className="border-t border-border mt-8 pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-sm text-muted-foreground">© 2024 VetScribe. All rights reserved.</p>
+            <div className="flex items-center gap-4 mt-4 sm:mt-0">
+              <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground">
+                Terms of Service
+              </Link>
+              <span className="text-xs text-muted-foreground">Made with ❤️ for veterinarians</span>
+            </div>
+          </div>
+          <div className="text-center mt-4">
+            <p className="text-xs text-green-600 font-medium">
+              🚀 FREE BETA - Early adopters get 50% off for life!
+            </p>
           </div>
         </div>
       </div>
