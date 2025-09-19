@@ -48,6 +48,7 @@ function FAQItem({ question, answer, isOpen, onToggle }: {
 }
 
 export function LandingPageOptimized() {
+  // Interactive FAQ accordion component
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
 
   const faqData = [
