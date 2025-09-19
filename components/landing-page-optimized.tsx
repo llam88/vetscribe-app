@@ -65,16 +65,16 @@ export function LandingPageOptimized() {
             </div>
 
             {/* Trust badges */}
-            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 opacity-70">
+            <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 opacity-70">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <Shield className="h-4 w-4 text-green-600" />
+                <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-green-600" />
                 </div>
                 <span className="text-sm font-medium text-muted-foreground">HIPAA Compliant</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
                 </div>
                 <span className="text-sm font-medium text-muted-foreground">SOC 2 Certified</span>
               </div>
@@ -82,7 +82,7 @@ export function LandingPageOptimized() {
           </div>
 
           {/* Hero illustration */}
-          <div className="mt-16 flex justify-center">
+          <div className="mt-20 flex justify-center">
             <div className="relative">
               <img
                 src="/vetscribe-hero.png"
@@ -95,11 +95,11 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 2: Honest Social Proof */}
-      <section id="social-proof" className="py-16 bg-gray-50">
+      <section id="social-proof" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Built for Veterinary Professionals</h2>
-            <p className="text-muted-foreground">Designed with real veterinary workflow in mind</p>
+            <p className="text-lg text-muted-foreground">Designed with real veterinary workflow in mind</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -144,8 +144,8 @@ export function LandingPageOptimized() {
           </div>
 
           {/* Add testimonials here instead of CTA */}
-          <div className="mt-16">
-            <h3 className="text-xl font-semibold text-center mb-8">What Veterinarians Are Saying</h3>
+          <div className="mt-20">
+            <h3 className="text-2xl font-bold text-center mb-12">What Veterinarians Are Saying</h3>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <Card className="p-4">
                 <CardContent className="pt-4">
@@ -261,7 +261,7 @@ export function LandingPageOptimized() {
           </div>
 
           {/* Strategic CTA after How It Works */}
-          <div className="text-center mt-16">
+          <div className="text-center mt-20">
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg" asChild>
               <a href="/sign-in">
                 🚀 Start Free Beta Access
@@ -277,7 +277,7 @@ export function LandingPageOptimized() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Why Veterinarians Choose VetScribe</h2>
-            <p className="text-muted-foreground">Proven benefits for busy veterinary practices</p>
+            <p className="text-lg text-muted-foreground">Proven benefits for busy veterinary practices</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -322,7 +322,7 @@ export function LandingPageOptimized() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Everything You Need</h2>
-            <p className="text-muted-foreground">Complete veterinary workflow in one platform</p>
+            <p className="text-lg text-muted-foreground">Complete veterinary workflow in one platform</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -411,7 +411,7 @@ export function LandingPageOptimized() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-muted-foreground">Free during beta, then affordable monthly pricing</p>
+            <p className="text-lg text-muted-foreground">Free during beta, then affordable monthly pricing</p>
           </div>
 
           <div className="max-w-3xl mx-auto">
@@ -464,23 +464,26 @@ export function LandingPageOptimized() {
                     </ul>
                   </div>
                   
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-                    <h4 className="font-semibold text-blue-900 mb-6 text-center">What happens after beta?</h4>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-6">
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-gray-600 mb-2">$79/month</div>
-                        <p className="text-sm text-gray-600">Standard pricing for new users</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 mb-8">
+                    <div className="text-center">
+                      <h4 className="font-semibold text-blue-900 mb-8">What happens after beta?</h4>
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-12 mb-8">
+                        <div className="text-center">
+                          <div className="text-4xl font-bold text-gray-600 mb-3">$79</div>
+                          <p className="text-sm text-gray-600 font-medium">per month</p>
+                          <p className="text-xs text-gray-500 mt-1">Standard pricing for new users</p>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-4xl font-bold text-primary mb-3">$39</div>
+                          <p className="text-sm text-primary font-medium">per month</p>
+                          <p className="text-xs text-primary mt-1">Your price as beta user (50% off forever)</p>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-primary mb-2">$39/month</div>
-                        <p className="text-sm text-primary font-medium">Your price as beta user</p>
-                        <p className="text-xs text-primary">(50% off forever)</p>
+                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <p className="text-sm text-green-800 font-medium">
+                          💡 Lock in 50% off for life by joining the beta now
+                        </p>
                       </div>
-                    </div>
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-                      <p className="text-sm text-green-800 font-medium">
-                        💡 Lock in 50% off for life by joining the beta now
-                      </p>
                     </div>
                   </div>
 
