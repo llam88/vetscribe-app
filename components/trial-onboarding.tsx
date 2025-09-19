@@ -32,7 +32,31 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
   const hasRecordings = appointments && appointments.some((a: any) => a.transcription)
   const hasSOAPNotes = appointments && appointments.some((a: any) => a.soap_note)
   const hasEmailDrafts = typeof window !== 'undefined' && localStorage.getItem('vetscribe-email-drafts')
-  const hasEmailConfig = typeof window !== 'undefined' && localStorage.getItem('vetscribe-user-email-config')
+  
+  // Check for email config completion
+  const [hasEmailConfig, setHasEmailConfig] = useState(false)
+  
+  useEffect(() => {
+    const checkEmailConfig = async () => {
+      try {
+        if (typeof window === 'undefined') return
+        
+        // Check if user has configured email settings
+        const response = await fetch('/api/check-email-config')
+        const result = await response.json()
+        setHasEmailConfig(result.configured && result.provider !== 'none')
+      } catch (error) {
+        console.log('Could not check email config:', error)
+        setHasEmailConfig(false)
+      }
+    }
+    
+    checkEmailConfig()
+    
+    // Re-check when user might have completed email setup
+    const interval = setInterval(checkEmailConfig, 10000) // Check every 10 seconds
+    return () => clearInterval(interval)
+  }, [])
 
   const steps: OnboardingStep[] = [
     {
