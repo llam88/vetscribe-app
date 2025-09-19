@@ -36,9 +36,19 @@ export function LandingPageOptimized() {
               <p className="text-lg font-medium text-foreground text-center mb-2">
                 VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
               </p>
-              <p className="text-base text-muted-foreground text-center">
+              <p className="text-base text-muted-foreground text-center mb-6">
                 <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
               </p>
+              
+              {/* Banner CTA */}
+              <div className="flex justify-center">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
+                  <a href="/sign-in">
+                    🔒 Secure My Founder Pricing
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </Button>
+              </div>
             </div>
 
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance mb-8">
@@ -60,14 +70,18 @@ export function LandingPageOptimized() {
             </div>
 
             {/* Trust badges */}
-            <div className="mt-12 flex items-center justify-center gap-8 opacity-60">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-20 bg-muted rounded"></div>
-                <span className="text-sm text-muted-foreground">HIPAA Compliant</span>
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 opacity-70">
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <Shield className="h-4 w-4 text-green-600" />
+                </div>
+                <span className="text-sm font-medium text-muted-foreground">HIPAA Compliant</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-20 bg-muted rounded"></div>
-                <span className="text-sm text-muted-foreground">SOC 2 Certified</span>
+              <div className="flex items-center gap-3">
+                <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-muted-foreground">SOC 2 Certified</span>
               </div>
             </div>
           </div>
@@ -419,6 +433,41 @@ export function LandingPageOptimized() {
                   <p className="text-lg text-muted-foreground mb-8">
                     Complete access to all VetScribe features during beta
                   </p>
+                  
+                  {/* Feature List */}
+                  <div className="text-left max-w-md mx-auto mb-8">
+                    <h4 className="font-semibold mb-4 text-center">Everything included:</h4>
+                    <ul className="space-y-3">
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">Unlimited appointment recordings</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">AI-powered SOAP note generation</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">Automated dental charts</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">Client communication tools</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">PIMS integration & export</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm">Mobile app access</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <Zap className="h-5 w-5 text-orange-500 flex-shrink-0" />
+                        <span className="text-sm font-medium">50% off forever when pricing launches</span>
+                      </li>
+                    </ul>
+                  </div>
                   
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
                     <h4 className="font-semibold text-blue-900 mb-4">What happens after beta?</h4>
