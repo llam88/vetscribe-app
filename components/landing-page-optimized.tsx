@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react"
 import { 
   Mic, 
   FileText, 
@@ -12,11 +13,65 @@ import {
   Play,
   Users,
   Shield,
-  Zap
+  Zap,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react"
 import Link from "next/link"
 
+function FAQItem({ question, answer, isOpen, onToggle }: { 
+  question: string; 
+  answer: string; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+}) {
+  return (
+    <div className="border border-border rounded-lg">
+      <button
+        onClick={onToggle}
+        className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
+      >
+        <h3 className="text-lg font-semibold">{question}</h3>
+        {isOpen ? (
+          <ChevronUp className="h-5 w-5 text-muted-foreground" />
+        ) : (
+          <ChevronDown className="h-5 w-5 text-muted-foreground" />
+        )}
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-4">
+          <p className="text-muted-foreground">{answer}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function LandingPageOptimized() {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+
+  const faqData = [
+    {
+      question: "Do I need a credit card to try VetScribe?",
+      answer: "No. VetScribe is completely free during beta, and you can start using it right away without a credit card."
+    },
+    {
+      question: "How long will beta access last?",
+      answer: "Free beta access runs until early 2026. After that, VetScribe will start at $79/month — but early adopters keep 50% off for life."
+    },
+    {
+      question: "Is my data secure?",
+      answer: "Yes. VetScribe is HIPAA compliant, SOC 2 certified, and all notes are encrypted in transit and at rest."
+    },
+    {
+      question: "Can my whole team use VetScribe?",
+      answer: "Yes. You can invite your support staff and associates at no extra cost during beta. Team access will remain affordable under founder pricing."
+    },
+    {
+      question: "What devices does VetScribe work on?",
+      answer: "VetScribe works in any modern browser on desktop, tablet, or mobile."
+    }
+  ]
   return (
     <div className="min-h-screen bg-background">
       {/* Section 1: Banner + Hero */}
@@ -510,38 +565,23 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 7: FAQ */}
-      <section id="faq" className="py-20">
+      <section id="faq" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-lg text-muted-foreground">Everything you need to know about VetScribe</p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-8">
-            <div className="bg-background border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-3">Do I need a credit card to try VetScribe?</h3>
-              <p className="text-muted-foreground">No. VetScribe is completely free during beta, and you can start using it right away without a credit card.</p>
-            </div>
-
-            <div className="bg-background border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-3">How long will beta access last?</h3>
-              <p className="text-muted-foreground">Free beta access runs until early 2026. After that, VetScribe will start at $79/month — but early adopters keep 50% off for life.</p>
-            </div>
-
-            <div className="bg-background border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-3">Is my data secure?</h3>
-              <p className="text-muted-foreground">Yes. VetScribe is HIPAA compliant, SOC 2 certified, and all notes are encrypted in transit and at rest.</p>
-            </div>
-
-            <div className="bg-background border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-3">Can my whole team use VetScribe?</h3>
-              <p className="text-muted-foreground">Yes. You can invite your support staff and associates at no extra cost during beta. Team access will remain affordable under founder pricing.</p>
-            </div>
-
-            <div className="bg-background border border-border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-3">What devices does VetScribe work on?</h3>
-              <p className="text-muted-foreground">VetScribe works in any modern browser on desktop, tablet, or mobile.</p>
-            </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqData.map((faq, index) => (
+              <FAQItem
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isOpen={openFAQ === index}
+                onToggle={() => setOpenFAQ(openFAQ === index ? null : index)}
+              />
+            ))}
           </div>
         </div>
       </section>
