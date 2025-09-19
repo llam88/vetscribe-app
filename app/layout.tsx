@@ -6,9 +6,9 @@ import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'VetScribe - AI Veterinary Transcription',
+  title: 'SwiftVet - AI Veterinary Transcription',
   description: 'AI-powered SOAP note generation for veterinarians. Record appointments and get professional notes instantly.',
-  generator: 'VetScribe',
+  generator: 'SwiftVet',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#0ea5e9',
 }

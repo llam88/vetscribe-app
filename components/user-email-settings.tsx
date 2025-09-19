@@ -195,7 +195,7 @@ export function UserEmailSettings() {
       <div>
         <h2 className="text-2xl font-bold mb-2">Email Configuration</h2>
         <p className="text-muted-foreground">
-          Set up your email provider to send client communications directly from VetScribe
+          Set up your email provider to send client communications directly from SwiftVet
         </p>
       </div>
 

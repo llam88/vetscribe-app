@@ -138,7 +138,7 @@ export default function SignInPage() {
       <div className="max-w-md mx-auto p-6 pt-20">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold mb-2">
-            {isSignUp ? "Join VetScribe" : "Welcome Back"}
+            {isSignUp ? "Join SwiftVet" : "Welcome Back"}
           </h1>
           <p className="text-muted-foreground">
             {isSignUp 

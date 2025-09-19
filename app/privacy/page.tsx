@@ -23,7 +23,7 @@ export default function PrivacyPage() {
                 audio recordings, and generated documentation solely to provide transcription and documentation services.
               </p>
               <p>
-                <strong>Usage Data:</strong> We collect information about how you use VetScribe to improve our services, 
+                <strong>Usage Data:</strong> We collect information about how you use SwiftVet to improve our services, 
                 including feature usage and performance metrics.
               </p>
             </div>

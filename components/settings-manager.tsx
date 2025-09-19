@@ -337,7 +337,7 @@ export function SettingsManager() {
             Email Configuration
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Set up your email provider to send client communications directly from VetScribe
+            Set up your email provider to send client communications directly from SwiftVet
           </p>
         </CardHeader>
         <CardContent>

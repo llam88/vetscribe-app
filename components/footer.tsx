@@ -11,7 +11,7 @@ export function Footer() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Stethoscope className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">VetScribe</span>
+              <span className="text-xl font-bold text-foreground">SwiftVet</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               AI-powered veterinary notes that save time and improve accuracy. Focus on what matters most - your patients.
@@ -73,7 +73,7 @@ export function Footer() {
 
         <div className="border-t border-border mt-8 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">© 2024 VetScribe. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">© 2024 SwiftVet. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-4 sm:mt-0">
               <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground">
                 Privacy Policy

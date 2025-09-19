@@ -144,7 +144,7 @@ export function LandingPageOptimized() {
             <div className="relative">
               <img
                 src="/vetscribe-hero.png"
-                alt="VetScribe - Veterinarian using AI-powered veterinary notes system with patient"
+                alt="SwiftVet - Veterinarian using AI-powered veterinary notes system with patient"
                 className="h-96 w-auto rounded-2xl shadow-2xl border"
               />
             </div>

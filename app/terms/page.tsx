@@ -15,7 +15,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Acceptance of Terms</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                By accessing and using VetScribe, you accept and agree to be bound by the terms 
+                By accessing and using SwiftVet, you accept and agree to be bound by the terms 
                 and provision of this agreement.
               </p>
             </div>
@@ -25,7 +25,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Service Description</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                VetScribe is an AI-powered veterinary transcription and documentation platform designed 
+                SwiftVet is an AI-powered veterinary transcription and documentation platform designed 
                 to help veterinary professionals create accurate, professional medical records efficiently.
               </p>
               <p>Our services include:</p>
@@ -43,13 +43,13 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Professional Use</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                <strong>Veterinary Professionals Only:</strong> VetScribe is intended for use by licensed 
+                <strong>Veterinary Professionals Only:</strong> SwiftVet is intended for use by licensed 
                 veterinary professionals. Users are responsible for ensuring compliance with all applicable 
                 veterinary regulations and standards of care.
               </p>
               <p>
                 <strong>Clinical Responsibility:</strong> All medical decisions, diagnoses, and treatments 
-                remain the sole responsibility of the attending veterinarian. VetScribe provides documentation 
+                remain the sole responsibility of the attending veterinarian. SwiftVet provides documentation 
                 assistance only and does not provide medical advice.
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function TermsPage() {
             <div className="space-y-4 text-gray-700">
               <p>
                 <strong>Your Data Ownership:</strong> You retain full ownership of all veterinary data, 
-                patient records, and practice information entered into VetScribe.
+                patient records, and practice information entered into SwiftVet.
               </p>
               <p>
                 <strong>Data Security:</strong> We implement industry-standard security measures to protect 
@@ -101,7 +101,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold mb-4">Limitation of Liability</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                VetScribe provides documentation assistance tools. The accuracy and completeness of generated 
+                SwiftVet provides documentation assistance tools. The accuracy and completeness of generated 
                 content should always be reviewed by the attending veterinarian. We are not liable for any 
                 clinical decisions made based on generated documentation.
               </p>
