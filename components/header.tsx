@@ -27,12 +27,18 @@ export function Header() {
             >
               Features
             </a>
-            <Link
-              href="/dashboard"
+            <a
+              href="#benefits"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Dashboard
-            </Link>
+              Benefits
+            </a>
+            <a
+              href="#pricing"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Pricing
+            </a>
           </nav>
 
           <div className="flex items-center gap-4">

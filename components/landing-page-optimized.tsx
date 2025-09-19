@@ -23,28 +23,23 @@ export function LandingPageOptimized() {
       <section className="relative overflow-hidden bg-background py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl text-center">
-            {/* Beta Banner */}
-            <div className="mb-16 bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-8">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <Badge className="bg-primary text-primary-foreground px-6 py-2 text-sm">
-                  🚀 FREE BETA
-                </Badge>
-                <Badge variant="outline" className="border-primary text-primary px-4 py-2">
-                  Limited Time
-                </Badge>
-              </div>
-              <p className="text-lg font-medium text-foreground text-center mb-2">
-                VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
-              </p>
-              <p className="text-base text-muted-foreground text-center mb-6">
-                <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
-              </p>
-              
-              {/* Banner CTA */}
-              <div className="flex justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
+            {/* Beta Banner - Cleaner Design */}
+            <div className="mb-12 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-6">
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-3">
+                  🚀 FREE BETA • Limited Time
+                </div>
+                <p className="text-base font-medium text-foreground mb-2">
+                  VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
+                </p>
+                
+                {/* Banner CTA */}
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2" asChild>
                   <a href="/sign-in">
-                    🔒 Secure My Founder Pricing
+                    🔒 Secure Founder Pricing
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
@@ -100,7 +95,7 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 2: Honest Social Proof */}
-      <section className="py-16 bg-gray-50">
+      <section id="social-proof" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Built for Veterinary Professionals</h2>
@@ -214,7 +209,7 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 3: How It Works */}
-      <section id="demo" className="py-20">
+      <section id="how-it-works" className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">How VetScribe Works</h2>
@@ -278,7 +273,7 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 4: Benefits Grid */}
-      <section className="py-20 bg-gray-50">
+      <section id="benefits" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Why Veterinarians Choose VetScribe</h2>
@@ -323,7 +318,7 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 5: Features Grid */}
-      <section className="py-20">
+      <section id="features" className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Everything You Need</h2>
@@ -412,7 +407,7 @@ export function LandingPageOptimized() {
       </section>
 
       {/* Section 6: Clear Pricing Strategy */}
-      <section className="py-20 bg-gray-50">
+      <section id="pricing" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
@@ -460,7 +455,7 @@ export function LandingPageOptimized() {
                       </li>
                       <li className="flex items-center gap-3">
                         <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-sm">Mobile app access</span>
+                        <span className="text-sm">Email setup & configuration</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <Zap className="h-5 w-5 text-orange-500 flex-shrink-0" />
