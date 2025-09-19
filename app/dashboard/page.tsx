@@ -67,7 +67,7 @@ export default async function Dashboard() {
         )}
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">VetScribe Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-2">SwiftVet Dashboard</h1>
           <p className="text-muted-foreground">Professional Veterinary Scribe - Transform Your Documentation</p>
         </div>
 

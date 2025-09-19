@@ -55,24 +55,24 @@ export function LandingPageOptimized() {
 
   const faqData = [
     {
-      question: "Do I need a credit card to try VetScribe?",
-      answer: "No. VetScribe is completely free during beta, and you can start using it right away without a credit card."
+      question: "Do I need a credit card to try SwiftVet?",
+      answer: "No. SwiftVet is completely free during beta, and you can start using it right away without a credit card."
     },
     {
       question: "How long will beta access last?",
-      answer: "Free beta access runs until early 2026. After that, VetScribe will start at $79/month — but early adopters keep 50% off for life."
+      answer: "Free beta access runs until early 2026. After that, SwiftVet will start at $79/month — but early adopters keep 50% off for life."
     },
     {
       question: "Is my data secure?",
-      answer: "Yes. VetScribe is HIPAA compliant, SOC 2 certified, and all notes are encrypted in transit and at rest."
+      answer: "Yes. SwiftVet is HIPAA compliant, SOC 2 certified, and all notes are encrypted in transit and at rest."
     },
     {
-      question: "Can my whole team use VetScribe?",
+      question: "Can my whole team use SwiftVet?",
       answer: "Yes. You can invite your support staff and associates at no extra cost during beta. Team access will remain affordable under founder pricing."
     },
     {
-      question: "What devices does VetScribe work on?",
-      answer: "VetScribe works in any modern browser on desktop, tablet, or mobile."
+      question: "What devices does SwiftVet work on?",
+      answer: "SwiftVet works in any modern browser on desktop, tablet, or mobile."
     }
   ]
   return (
@@ -88,7 +88,7 @@ export function LandingPageOptimized() {
                   Free Beta Access — Through Q4 2025
                 </div>
                 <p className="text-base font-medium text-foreground mb-2">
-                  VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
+                  SwiftVet is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
                 </p>
                 <p className="text-sm text-muted-foreground mb-4">
                   <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
@@ -118,7 +118,7 @@ export function LandingPageOptimized() {
                 ✅ No credit card required • ✅ Google sign-in • ✅ Cancel anytime
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                Join <strong>500+ veterinarians</strong> saving time with VetScribe
+                Join <strong>500+ veterinarians</strong> saving time with SwiftVet
               </p>
             </div>
 
@@ -217,7 +217,7 @@ export function LandingPageOptimized() {
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4 italic">
-                    "VetScribe has transformed my practice. I save over an hour daily on documentation."
+                    "SwiftVet has transformed my practice. I save over an hour daily on documentation."
                   </p>
                   <div className="text-center">
                     <p className="text-sm font-semibold">Dr. Sarah Chen, DVM</p>
@@ -276,7 +276,7 @@ export function LandingPageOptimized() {
       <section id="how-it-works" className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">How VetScribe Works</h2>
+            <h2 className="text-3xl font-bold mb-4">How SwiftVet Works</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               From appointment recording to client communication in 4 simple steps
             </p>
@@ -340,7 +340,7 @@ export function LandingPageOptimized() {
       <section id="benefits" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Why Veterinarians Choose VetScribe</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Veterinarians Choose SwiftVet</h2>
             <p className="text-lg text-muted-foreground">Proven benefits for busy veterinary practices</p>
           </div>
 
@@ -490,7 +490,7 @@ export function LandingPageOptimized() {
                   <h3 className="text-3xl font-bold mb-4">Currently Free</h3>
                   <div className="text-6xl font-bold text-primary mb-2">$0</div>
                   <p className="text-lg text-muted-foreground mb-8">
-                    Complete access to all VetScribe features during beta
+                    Complete access to all SwiftVet features during beta
                   </p>
                   
                   {/* Feature List */}
@@ -572,7 +572,7 @@ export function LandingPageOptimized() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-muted-foreground">Everything you need to know about VetScribe</p>
+            <p className="text-lg text-muted-foreground">Everything you need to know about SwiftVet</p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">

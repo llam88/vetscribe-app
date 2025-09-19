@@ -131,7 +131,7 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
                 <Sparkles className="h-8 w-8 text-blue-600" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-blue-900">Welcome to VetScribe! 🎉</h2>
+                <h2 className="text-2xl font-bold text-blue-900">Welcome to SwiftVet! 🎉</h2>
                 <p className="text-blue-700">
                   You're on a <strong>free trial</strong>. Use the buttons below to get started.
                 </p>
@@ -157,7 +157,7 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
         <CardHeader>
           <CardTitle>🚀 Quick Start</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Click any button below to start using VetScribe
+            Click any button below to start using SwiftVet
           </p>
         </CardHeader>
         <CardContent>
@@ -233,7 +233,7 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
             ) : (
               <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
                 <h4 className="font-medium text-green-900">🎉 All steps completed!</h4>
-                <p className="text-sm text-green-700">You've experienced the full power of VetScribe AI!</p>
+                <p className="text-sm text-green-700">You've experienced the full power of SwiftVet AI!</p>
               </div>
             )}
           </div>
@@ -357,7 +357,7 @@ export function TrialOnboarding({ userEmail, completedSteps = [], appointments =
                 🎉 Congratulations! Trial Complete
               </h3>
               <p className="text-green-700 mb-4">
-                You've experienced all the core features of VetScribe AI. Ready to transform your practice?
+                You've experienced all the core features of SwiftVet AI. Ready to transform your practice?
               </p>
               <div className="flex gap-4 justify-center">
                 <Button className="bg-green-600 hover:bg-green-700">
