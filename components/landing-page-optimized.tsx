@@ -465,18 +465,19 @@ export function LandingPageOptimized() {
                   </div>
                   
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-                    <h4 className="font-semibold text-blue-900 mb-4">What happens after beta?</h4>
-                    <div className="grid md:grid-cols-2 gap-6 text-left">
-                      <div>
-                        <div className="text-2xl font-bold text-gray-600 mb-2">$79/month</div>
+                    <h4 className="font-semibold text-blue-900 mb-6 text-center">What happens after beta?</h4>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-6">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-gray-600 mb-2">$79/month</div>
                         <p className="text-sm text-gray-600">Standard pricing for new users</p>
                       </div>
-                      <div>
-                        <div className="text-2xl font-bold text-primary mb-2">$39/month</div>
-                        <p className="text-sm text-primary font-medium">Your price as beta user (50% off forever)</p>
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-primary mb-2">$39/month</div>
+                        <p className="text-sm text-primary font-medium">Your price as beta user</p>
+                        <p className="text-xs text-primary">(50% off forever)</p>
                       </div>
                     </div>
-                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                       <p className="text-sm text-green-800 font-medium">
                         💡 Lock in 50% off for life by joining the beta now
                       </p>
