@@ -123,24 +123,32 @@ export function AppointmentManager() {
       try {
         console.log('Checking if patient exists:', newAppointment.patient_name)
         
-        const { data: existingPatients } = await sb
+        const { data: existingPatients, error: searchError } = await sb
           .from('patients')
-          .select('id')
+          .select('id, name')
           .eq('name', newAppointment.patient_name)
           .eq('user_id', user.id)
           .limit(1)
+        
+        if (searchError) {
+          console.warn('Error searching for existing patient:', searchError)
+          // Continue anyway to try creating the patient
+        }
         
         if (!existingPatients || existingPatients.length === 0) {
           console.log('Patient not found, creating new patient record')
           
           const patientData = {
             user_id: user.id,
-            name: newAppointment.patient_name,
-            owner: newAppointment.owner_name,
+            name: newAppointment.patient_name.trim(),
+            owner: newAppointment.owner_name?.trim() || 'Unknown Owner',
             species: newAppointment.species,
-            breed: newAppointment.breed,
-            notes: `Auto-created from appointment: ${newAppointment.appointment_type}`
+            breed: newAppointment.breed?.trim() || '',
+            notes: `Auto-created from appointment: ${newAppointment.appointment_type}`,
+            created_at: new Date().toISOString()
           }
+          
+          console.log('Creating patient with data:', patientData)
           
           const { data: newPatient, error: patientError } = await sb
             .from('patients')
@@ -148,15 +156,19 @@ export function AppointmentManager() {
             .select()
           
           if (patientError) {
-            console.warn('Failed to auto-create patient:', patientError)
+            console.error('Failed to auto-create patient - detailed error:', patientError)
+            alert(`⚠️ Appointment saved but patient creation failed: ${patientError.message}`)
           } else {
-            console.log('✅ Patient auto-created:', newPatient[0])
+            console.log('✅ Patient auto-created successfully:', newPatient[0])
+            alert('✅ Appointment saved and patient profile created!')
           }
         } else {
-          console.log('Patient already exists, skipping creation')
+          console.log('Patient already exists:', existingPatients[0])
+          alert('✅ Appointment saved and linked to existing patient!')
         }
       } catch (patientError) {
-        console.warn('Patient auto-creation failed:', patientError)
+        console.error('Patient auto-creation failed with exception:', patientError)
+        alert(`⚠️ Appointment saved but patient creation failed: ${patientError}`)
       }
 
       // Reset form

@@ -1161,17 +1161,40 @@ Example:
                   🖨️ Print Chart
                 </Button>
                 <Button size="sm" onClick={async () => {
-                  // Find patient ID by name
-                  const { data: patients } = await sb
-                    .from('patients')
-                    .select('id')
-                    .eq('name', appointment.patient_name)
-                    .limit(1)
-                  
-                  if (patients && patients.length > 0) {
-                    window.location.href = `/patients/${patients[0].id}`
-                  } else {
-                    alert('Patient profile not found. Please check the Patients tab.')
+                  try {
+                    // Get current user
+                    const { data: { user } } = await sb.auth.getUser()
+                    if (!user) {
+                      alert('Please sign in to view patient profile')
+                      return
+                    }
+                    
+                    // Find patient ID by name and user_id
+                    console.log('Searching for patient:', appointment.patient_name, 'for user:', user.id)
+                    const { data: patients, error } = await sb
+                      .from('patients')
+                      .select('id, name')
+                      .eq('name', appointment.patient_name)
+                      .eq('user_id', user.id)
+                      .limit(1)
+                    
+                    if (error) {
+                      console.error('Error searching for patient:', error)
+                      alert('Error finding patient profile. Check console for details.')
+                      return
+                    }
+                    
+                    console.log('Found patients:', patients)
+                    
+                    if (patients && patients.length > 0) {
+                      console.log('Navigating to patient profile:', patients[0].id)
+                      window.location.href = `/patients/${patients[0].id}`
+                    } else {
+                      alert(`Patient "${appointment.patient_name}" not found in your records. The patient record may not have been created properly when the appointment was made.`)
+                    }
+                  } catch (error) {
+                    console.error('Error accessing patient profile:', error)
+                    alert('Error accessing patient profile. Check console for details.')
                   }
                 }}>
                   👤 View Patient Profile
