@@ -199,7 +199,7 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
     try {
       setLoadingAppointments(prev => ({ ...prev, 'sending_email': true }))
       
-      const response = await fetch('/api/send-email', {
+      const response = await fetch('/api/send-user-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

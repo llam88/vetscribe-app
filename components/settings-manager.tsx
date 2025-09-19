@@ -18,8 +18,10 @@ import {
   TestTube,
   Crown,
   Activity,
-  Info
+  Info,
+  Mail
 } from "lucide-react"
+import { UserEmailSettings } from "@/components/user-email-settings"
 
 export function SettingsManager() {
   const [settings, setSettings] = useState({
@@ -324,6 +326,22 @@ export function SettingsManager() {
               onCheckedChange={(checked) => updateSetting('compactView', checked)}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Email Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-5 w-5" />
+            Email Configuration
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Set up your email provider to send client communications directly from VetScribe
+          </p>
+        </CardHeader>
+        <CardContent>
+          <UserEmailSettings />
         </CardContent>
       </Card>
 
