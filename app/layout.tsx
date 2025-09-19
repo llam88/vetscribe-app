@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   generator: 'SwiftVet',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#0ea5e9',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
