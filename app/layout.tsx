@@ -5,9 +5,11 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'VetScribe - AI Veterinary Transcription',
+  description: 'AI-powered SOAP note generation for veterinarians. Record appointments and get professional notes instantly.',
+  generator: 'VetScribe',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  themeColor: '#0ea5e9',
 }
 
 export default function RootLayout({
