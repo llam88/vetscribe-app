@@ -7,7 +7,7 @@ export default function TermsPage() {
       <div className="p-6 max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Terms of Service</h1>
-          <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+          <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()} - Force deployed</p>
         </div>
 
         <div className="prose prose-gray max-w-none space-y-8">
