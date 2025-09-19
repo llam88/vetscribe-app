@@ -158,22 +158,12 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-6 italic">
+                  <p className="text-sm text-muted-foreground mb-4 italic">
                     "VetScribe has transformed my practice. I save over an hour daily on documentation."
                   </p>
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
-                      <span className="text-blue-600 font-semibold text-sm">SC</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">Dr. Sarah Chen, DVM</p>
-                      <div className="flex items-center gap-2">
-                        <div className="h-4 w-6 bg-green-100 rounded-sm flex items-center justify-center">
-                          <div className="h-2 w-2 bg-green-600 rounded-full"></div>
-                        </div>
-                        <p className="text-xs text-muted-foreground">Mountain View Animal Hospital</p>
-                      </div>
-                    </div>
+                  <div className="text-center">
+                    <p className="text-sm font-semibold">Dr. Sarah Chen, DVM</p>
+                    <p className="text-xs text-muted-foreground">Mountain View Animal Hospital</p>
                   </div>
                 </CardContent>
               </Card>
@@ -189,22 +179,12 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-6 italic">
+                  <p className="text-sm text-muted-foreground mb-4 italic">
                     "The AI-generated SOAP notes are incredibly accurate. My clients love the detailed summaries."
                   </p>
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center">
-                      <span className="text-purple-600 font-semibold text-sm">MR</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">Dr. Michael Rodriguez</p>
-                      <div className="flex items-center gap-2">
-                        <div className="h-4 w-6 bg-blue-100 rounded-sm flex items-center justify-center">
-                          <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
-                        </div>
-                        <p className="text-xs text-muted-foreground">Central Valley Veterinary Clinic</p>
-                      </div>
-                    </div>
+                  <div className="text-center">
+                    <p className="text-sm font-semibold">Dr. Michael Rodriguez</p>
+                    <p className="text-xs text-muted-foreground">Central Valley Veterinary Clinic</p>
                   </div>
                 </CardContent>
               </Card>
@@ -220,22 +200,12 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-6 italic">
+                  <p className="text-sm text-muted-foreground mb-4 italic">
                     "Perfect for busy practices. The documentation quality is consistently professional."
                   </p>
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center">
-                      <span className="text-emerald-600 font-semibold text-sm">LT</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">Dr. Lisa Thompson, DVM</p>
-                      <div className="flex items-center gap-2">
-                        <div className="h-4 w-6 bg-red-100 rounded-sm flex items-center justify-center">
-                          <div className="h-2 w-2 bg-red-600 rounded-full"></div>
-                        </div>
-                        <p className="text-xs text-muted-foreground">Riverside Emergency Vet</p>
-                      </div>
-                    </div>
+                  <div className="text-center">
+                    <p className="text-sm font-semibold">Dr. Lisa Thompson, DVM</p>
+                    <p className="text-xs text-muted-foreground">Riverside Emergency Vet</p>
                   </div>
                 </CardContent>
               </Card>
@@ -539,7 +509,44 @@ export function LandingPageOptimized() {
         </div>
       </section>
 
-      {/* Section 7: Final CTA */}
+      {/* Section 7: FAQ */}
+      <section id="faq" className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+            <p className="text-lg text-muted-foreground">Everything you need to know about VetScribe</p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-8">
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-3">Do I need a credit card to try VetScribe?</h3>
+              <p className="text-muted-foreground">No. VetScribe is completely free during beta, and you can start using it right away without a credit card.</p>
+            </div>
+
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-3">How long will beta access last?</h3>
+              <p className="text-muted-foreground">Free beta access runs until early 2026. After that, VetScribe will start at $79/month — but early adopters keep 50% off for life.</p>
+            </div>
+
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-3">Is my data secure?</h3>
+              <p className="text-muted-foreground">Yes. VetScribe is HIPAA compliant, SOC 2 certified, and all notes are encrypted in transit and at rest.</p>
+            </div>
+
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-3">Can my whole team use VetScribe?</h3>
+              <p className="text-muted-foreground">Yes. You can invite your support staff and associates at no extra cost during beta. Team access will remain affordable under founder pricing.</p>
+            </div>
+
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-3">What devices does VetScribe work on?</h3>
+              <p className="text-muted-foreground">VetScribe works in any modern browser on desktop, tablet, or mobile.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 8: Final CTA */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Save 60+ Minutes Daily?</h2>

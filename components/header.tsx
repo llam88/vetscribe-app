@@ -28,16 +28,16 @@ export function Header() {
               Features
             </a>
             <a
-              href="#benefits"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Benefits
-            </a>
-            <a
               href="#pricing"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Pricing
+            </a>
+            <a
+              href="#faq"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              FAQ
             </a>
           </nav>
 
