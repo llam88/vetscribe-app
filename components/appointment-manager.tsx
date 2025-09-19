@@ -322,39 +322,39 @@ Your Veterinary Team`
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Appointment Management</h1>
-          <p className="text-muted-foreground">
-            {appointments.length} total appointments • {filteredAppointments.length} showing
-          </p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Appointment Management</h1>
+            <p className="text-muted-foreground text-sm">
+              {appointments.length} total • {filteredAppointments.length} showing
+            </p>
+          </div>
+          <Button 
+            onClick={() => setShowNewForm(true)}
+            className="bg-primary hover:bg-primary/90 w-full sm:w-auto"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            New Appointment
+          </Button>
         </div>
-        <Button 
-          onClick={() => setShowNewForm(true)}
-          className="bg-primary hover:bg-primary/90"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          New Appointment
-        </Button>
       </div>
 
       {/* Filters and Search */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search patients, owners, or species..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+          <div className="flex flex-col gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search patients, owners, or species..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -392,92 +392,110 @@ Your Veterinary Team`
         ) : (
           filteredAppointments.map((appointment) => (
             <Card key={appointment.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+              <CardContent className="p-4 sm:p-6">
+                {/* Mobile-first layout */}
+                <div className="space-y-4">
+                  {/* Header with badges */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                       <h3 className="text-lg font-semibold">{appointment.patient_name}</h3>
-                      <Badge className={getStatusColor(appointment.status)}>
-                        {appointment.status}
-                      </Badge>
-                      {getCompletionBadge(appointment)}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-4">
-                      <div>
-                        <strong>Owner:</strong> {appointment.owner_name}
-                      </div>
-                      <div>
-                        <strong>Species:</strong> {appointment.species}
-                      </div>
-                      <div>
-                        <strong>Type:</strong> {appointment.appointment_type}
-                      </div>
-                      <div>
-                        <strong>Date:</strong> {appointment.created_at?.split('T')[0] || 'No date'}
-                      </div>
-                    </div>
-
-                    {/* Progress Indicators */}
-                    <div className="flex items-center gap-4 text-xs">
-                      <div className={`flex items-center gap-1 ${appointment.transcription ? 'text-green-600' : 'text-gray-400'}`}>
-                        <CheckCircle2 className="h-3 w-3" />
-                        Transcribed
-                      </div>
-                      <div className={`flex items-center gap-1 ${appointment.soap_note ? 'text-green-600' : 'text-gray-400'}`}>
-                        <CheckCircle2 className="h-3 w-3" />
-                        SOAP Note
-                      </div>
-                      <div className={`flex items-center gap-1 ${appointment.client_summary ? 'text-green-600' : 'text-gray-400'}`}>
-                        <CheckCircle2 className="h-3 w-3" />
-                        Client Summary
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Badge className={getStatusColor(appointment.status)}>
+                          {appointment.status}
+                        </Badge>
+                        {getCompletionBadge(appointment)}
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Patient info - stack on mobile, grid on larger screens */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm text-muted-foreground">
+                    <div className="flex justify-between sm:block">
+                      <strong className="sm:inline">Owner:</strong> 
+                      <span className="sm:block">{appointment.owner_name}</span>
+                    </div>
+                    <div className="flex justify-between sm:block">
+                      <strong className="sm:inline">Species:</strong> 
+                      <span className="sm:block">{appointment.species}</span>
+                    </div>
+                    <div className="flex justify-between sm:block">
+                      <strong className="sm:inline">Type:</strong> 
+                      <span className="sm:block">{appointment.appointment_type}</span>
+                    </div>
+                    <div className="flex justify-between sm:block">
+                      <strong className="sm:inline">Date:</strong> 
+                      <span className="sm:block">{appointment.created_at?.split('T')[0] || 'No date'}</span>
+                    </div>
+                  </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    {/* Primary action: Record if not started, Continue if in progress */}
-                    {!appointment.transcription ? (
-                      <Button 
-                        asChild
-                        size="sm"
-                        className="bg-red-500 hover:bg-red-600 text-white"
-                      >
-                        <a href={`/appointments/${appointment.id}/record`}>
-                          <Mic className="h-4 w-4 mr-2" />
-                          {appointment.status === 'pending' ? 'Start Recording' : 'Continue'}
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button 
-                        asChild
-                        size="sm"
-                        variant="outline"
-                      >
-                        <a href={`/appointments/${appointment.id}/record`}>
-                          <FileText className="h-4 w-4 mr-2" />
-                          Review
-                        </a>
-                      </Button>
-                    )}
-                    
-                    <Button 
-                      asChild
-                      variant="ghost" 
-                      size="sm"
-                    >
-                      <a href={`/appointments/${appointment.id}`}>
-                        <Eye className="h-4 w-4" />
-                      </a>
-                    </Button>
-                    
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="h-4 w-4" />
+                  {/* Progress Indicators - wrap on mobile */}
+                  <div className="flex flex-wrap items-center gap-3 text-xs">
+                    <div className={`flex items-center gap-1 ${appointment.transcription ? 'text-green-600' : 'text-gray-400'}`}>
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span className="whitespace-nowrap">Transcribed</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${appointment.soap_note ? 'text-green-600' : 'text-gray-400'}`}>
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span className="whitespace-nowrap">SOAP Note</span>
+                    </div>
+                    <div className={`flex items-center gap-1 ${appointment.client_summary ? 'text-green-600' : 'text-gray-400'}`}>
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span className="whitespace-nowrap">Client Summary</span>
+                    </div>
+                  </div>
+
+                  {/* Actions - stack on mobile, horizontal on larger screens */}
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      {/* Primary action: Record if not started, Continue if in progress */}
+                      {!appointment.transcription ? (
+                        <Button 
+                          asChild
+                          size="sm"
+                          className="bg-red-500 hover:bg-red-600 text-white w-full sm:w-auto"
+                        >
+                          <a href={`/appointments/${appointment.id}/record`}>
+                            <Mic className="h-4 w-4 mr-2" />
+                            <span className="sm:hidden">Record</span>
+                            <span className="hidden sm:inline">{appointment.status === 'pending' ? 'Start Recording' : 'Continue'}</span>
+                          </a>
                         </Button>
-                      </DialogTrigger>
+                      ) : (
+                        <Button 
+                          asChild
+                          size="sm"
+                          variant="outline"
+                          className="w-full sm:w-auto"
+                        >
+                          <a href={`/appointments/${appointment.id}/record`}>
+                            <FileText className="h-4 w-4 mr-2" />
+                            Review
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                    
+                    {/* Secondary actions */}
+                    <div className="flex items-center gap-2 justify-end">
+                      <Button 
+                        asChild
+                        variant="ghost" 
+                        size="sm"
+                        className="flex-shrink-0"
+                      >
+                        <a href={`/appointments/${appointment.id}`}>
+                          <Eye className="h-4 w-4" />
+                          <span className="sr-only">View Details</span>
+                        </a>
+                      </Button>
+                      
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="sm" className="flex-shrink-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">More Actions</span>
+                          </Button>
+                        </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle>Appointment Actions</DialogTitle>
