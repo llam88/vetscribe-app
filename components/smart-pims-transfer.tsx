@@ -263,12 +263,12 @@ export function SmartPimsTransfer({ appointmentData }: PimsTransferProps) {
 
         {/* Format Customizer Dialog */}
         <Dialog open={showCustomizer} onOpenChange={setShowCustomizer}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
             <DialogHeader>
               <DialogTitle>Customize Format for {selectedPims.name}</DialogTitle>
             </DialogHeader>
             
-            <div className="space-y-4">
+            <div className="overflow-y-auto max-h-[calc(90vh-120px)] space-y-4 pr-2">
               <Alert>
                 <Info className="h-4 w-4" />
                 <AlertDescription>
@@ -276,47 +276,61 @@ export function SmartPimsTransfer({ appointmentData }: PimsTransferProps) {
                 </AlertDescription>
               </Alert>
               
-              <div>
-                <Label htmlFor="custom-format">Format Template:</Label>
-                <Textarea
-                  id="custom-format"
-                  value={customFormat}
-                  onChange={(e) => setCustomFormat(e.target.value)}
-                  rows={10}
-                  className="font-mono text-sm"
-                  placeholder="Use variables like {patient_name}, {soap_note}, {date}, etc."
-                />
-              </div>
-              
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <h4 className="font-medium text-blue-900 mb-2">Available Variables:</h4>
-                <div className="grid grid-cols-2 gap-2 text-sm text-blue-800">
-                  <code>{'{patient_name}'}</code>
-                  <code>{'{owner_name}'}</code>
-                  <code>{'{date}'}</code>
-                  <code>{'{appointment_type}'}</code>
-                  <code>{'{soap_note}'}</code>
-                  <code>{'{client_summary}'}</code>
-                  <code>{'{transcription}'}</code>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* Format Editor */}
+                <div className="space-y-3">
+                  <Label htmlFor="custom-format">Format Template:</Label>
+                  <Textarea
+                    id="custom-format"
+                    value={customFormat}
+                    onChange={(e) => setCustomFormat(e.target.value)}
+                    rows={12}
+                    className="font-mono text-sm resize-none"
+                    placeholder="Use variables like {patient_name}, {soap_note}, {date}, etc."
+                  />
+                  
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <h4 className="font-medium text-blue-900 mb-2">Available Variables:</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-sm text-blue-800">
+                      <code className="bg-white px-1 rounded">{'{patient_name}'}</code>
+                      <code className="bg-white px-1 rounded">{'{owner_name}'}</code>
+                      <code className="bg-white px-1 rounded">{'{date}'}</code>
+                      <code className="bg-white px-1 rounded">{'{appointment_type}'}</code>
+                      <code className="bg-white px-1 rounded">{'{soap_note}'}</code>
+                      <code className="bg-white px-1 rounded">{'{client_summary}'}</code>
+                      <code className="bg-white px-1 rounded">{'{transcription}'}</code>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="bg-gray-50 rounded-lg p-3">
-                <h4 className="font-medium mb-2">Live Preview:</h4>
-                <pre className="text-xs whitespace-pre-wrap">{formatForPims()}</pre>
-              </div>
-              
-              <div className="flex gap-2">
-                <Button onClick={saveCustomFormat} className="flex-1">
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Custom Format
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCustomFormat(selectedPims.defaultFormat)}
-                >
-                  Reset to Default
-                </Button>
+                
+                {/* Live Preview */}
+                <div className="space-y-3">
+                  <Label>Live Preview:</Label>
+                  <div className="bg-gray-50 rounded-lg border">
+                    <div className="p-3 border-b bg-gray-100">
+                      <h4 className="font-medium text-sm">Preview for {selectedPims.name}:</h4>
+                    </div>
+                    <div className="p-3 max-h-80 overflow-y-auto">
+                      <pre className="text-xs whitespace-pre-wrap font-mono leading-relaxed">
+                        {formatForPims()}
+                      </pre>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button onClick={saveCustomFormat} size="sm" className="flex-1">
+                      <Save className="h-4 w-4 mr-2" />
+                      Save Format
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setCustomFormat(selectedPims.defaultFormat)}
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </DialogContent>
