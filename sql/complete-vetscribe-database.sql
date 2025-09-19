@@ -197,13 +197,41 @@ BEGIN
 END $$;
 
 -- ========================================
--- 4. ADD EMAIL CONFIG TO EXISTING PROFILES (if needed)
+-- 4. ADD MISSING COLUMNS TO EXISTING PROFILES (if needed)
 -- ========================================
 
--- Add email_config column to existing profiles table if it doesn't exist
+-- Add missing columns to existing profiles table if they don't exist
 DO $$ 
 BEGIN
-  -- Check if email_config column exists
+  -- Add updated_at column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'updated_at'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+    
+    RAISE NOTICE 'Added updated_at column to profiles table';
+  ELSE
+    RAISE NOTICE 'updated_at column already exists';
+  END IF;
+
+  -- Add created_at column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'created_at'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+    
+    RAISE NOTICE 'Added created_at column to profiles table';
+  ELSE
+    RAISE NOTICE 'created_at column already exists';
+  END IF;
+
+  -- Add email_config column if it doesn't exist
   IF NOT EXISTS (
     SELECT 1 FROM information_schema.columns 
     WHERE table_name = 'profiles' 
@@ -215,6 +243,62 @@ BEGIN
     RAISE NOTICE 'Added email_config column to profiles table';
   ELSE
     RAISE NOTICE 'email_config column already exists';
+  END IF;
+
+  -- Add full_name column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'full_name'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN full_name TEXT;
+    
+    RAISE NOTICE 'Added full_name column to profiles table';
+  ELSE
+    RAISE NOTICE 'full_name column already exists';
+  END IF;
+
+  -- Add practice_name column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'practice_name'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN practice_name TEXT;
+    
+    RAISE NOTICE 'Added practice_name column to profiles table';
+  ELSE
+    RAISE NOTICE 'practice_name column already exists';
+  END IF;
+
+  -- Add user_type column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'user_type'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN user_type TEXT DEFAULT 'veterinarian';
+    
+    RAISE NOTICE 'Added user_type column to profiles table';
+  ELSE
+    RAISE NOTICE 'user_type column already exists';
+  END IF;
+
+  -- Add email column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'profiles' 
+    AND column_name = 'email'
+  ) THEN
+    ALTER TABLE public.profiles 
+    ADD COLUMN email TEXT;
+    
+    RAISE NOTICE 'Added email column to profiles table';
+  ELSE
+    RAISE NOTICE 'email column already exists';
   END IF;
 END $$;
 
