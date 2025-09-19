@@ -76,8 +76,7 @@ export function UserEmailSettings() {
         .upsert({
           id: user.id,
           email: user.email,
-          email_config: emailConfig,
-          updated_at: new Date().toISOString()
+          email_config: emailConfig
         })
         .select()
 
@@ -116,8 +115,7 @@ export function UserEmailSettings() {
         const { error: updateError } = await sb
           .from('profiles')
           .update({ 
-            email_config: emailConfig,
-            updated_at: new Date().toISOString() 
+            email_config: emailConfig
           })
           .eq('id', user!.id)
         
