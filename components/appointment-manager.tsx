@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { CalendarDays, FileText, Mail, Eye, Edit, Trash2, Download, Send, Plus, Search, Filter, MoreHorizontal, CheckCircle2, Mic } from "lucide-react"
 import { createClientBrowser } from "@/lib/supabase-browser"
+import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface Appointment {
@@ -30,6 +31,7 @@ interface Appointment {
 
 export function AppointmentManager() {
   const sb = createClientBrowser()
+  const { toast } = useToast()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -160,11 +162,19 @@ export function AppointmentManager() {
             alert(`⚠️ Appointment saved but patient creation failed: ${patientError.message}`)
           } else {
             console.log('✅ Patient auto-created successfully:', newPatient[0])
-            alert('✅ Appointment saved and patient profile created!')
+            toast({
+              title: "✅ Appointment Created!",
+              description: "Patient profile created and appointment scheduled.",
+              duration: 4000,
+            })
           }
         } else {
           console.log('Patient already exists:', existingPatients[0])
-          alert('✅ Appointment saved and linked to existing patient!')
+          toast({
+            title: "✅ Appointment Created!",
+            description: "Appointment saved and linked to existing patient.",
+            duration: 4000,
+          })
         }
       } catch (patientError) {
         console.error('Patient auto-creation failed with exception:', patientError)
@@ -184,7 +194,11 @@ export function AppointmentManager() {
       })
       setShowNewForm(false)
       loadAppointments()
-      alert('✅ Appointment saved successfully! Patient record updated.')
+      toast({
+        title: "✅ Success!",
+        description: "Appointment saved successfully! Patient record updated.",
+        duration: 4000,
+      })
       
     } catch (error) {
       console.error('Error saving appointment:', error)

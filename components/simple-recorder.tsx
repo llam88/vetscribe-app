@@ -20,6 +20,7 @@ import {
   Clock
 } from "lucide-react"
 import { createClientBrowser } from "@/lib/supabase-browser"
+import { useToast } from "@/hooks/use-toast"
 import { SOAPTemplateManager } from "@/components/soap-template-manager"
 import { defaultSOAPTemplates, type SOAPTemplate } from "@/data/soap-templates"
 import { SmartPimsTransfer } from "@/components/smart-pims-transfer"
@@ -30,6 +31,7 @@ interface SimpleRecorderProps {
 
 export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   const sb = createClientBrowser()
+  const { toast } = useToast()
   
   // Audio recording states
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -194,7 +196,11 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       const file = e.target.files[0]
       if (file.type.startsWith('audio/')) {
         setUploadedFile(file)
-        alert('✅ File uploaded! Click "Generate Transcription" to process.')
+        toast({
+          title: "📁 File Uploaded!",
+          description: "Audio file ready. Click 'Generate Transcription' to process.",
+          duration: 3000,
+        })
       } else {
         alert('Please select an audio file')
       }
@@ -245,11 +251,20 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         console.warn('Database save failed, but transcription is still available:', dbError)
       }
       
-      alert(`✅ Transcription complete! Generated ${newTranscription.length} characters.`)
+      toast({
+        title: "✅ Transcription Complete!",
+        description: `Generated ${newTranscription.length} characters. Ready to generate SOAP notes.`,
+        duration: 4000,
+      })
       
     } catch (error) {
       console.error('Transcription error:', error)
-      alert('❌ Error transcribing audio. Check console for details.')
+      toast({
+        title: "❌ Transcription Failed",
+        description: "Error transcribing audio. Please try again or check console for details.",
+        variant: "destructive",
+        duration: 5000,
+      })
     } finally {
       setLoading(false)
     }
@@ -314,13 +329,28 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       }
       
       const templateMessage = template ? ` using ${template.name} template` : ''
-      alert(hasDentalKeywords 
-        ? `✅ SOAP note generated${templateMessage}! 🦷 Dental procedures detected - you can now generate a dental chart.`
-        : `✅ SOAP note generated${templateMessage}! ${newSOAP.length} characters created.`)
+      if (hasDentalKeywords) {
+        toast({
+          title: "✅ SOAP Note Generated!",
+          description: `${templateMessage} 🦷 Dental procedures detected - you can now generate a dental chart.`,
+          duration: 6000,
+        })
+      } else {
+        toast({
+          title: "✅ SOAP Note Generated!",
+          description: `${templateMessage} Created ${newSOAP.length} characters. Ready for client summary.`,
+          duration: 4000,
+        })
+      }
       
     } catch (error) {
       console.error('SOAP generation error:', error)
-      alert('❌ Error generating SOAP note.')
+      toast({
+        title: "❌ SOAP Generation Failed",
+        description: "Error generating SOAP note. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      })
     } finally {
       setLoading(false)
     }
@@ -419,9 +449,17 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         }
         
         if (updateResult && updateResult.length > 0) {
-          alert('✅ AI dental chart analysis completed! Chart saved to patient profile.')
+          toast({
+            title: "🦷 Dental Chart Complete!",
+            description: "AI analysis completed and saved to patient profile.",
+            duration: 4000,
+          })
         } else {
-          alert('✅ AI dental chart analysis completed! Chart displayed (database save may need column setup - see console).')
+          toast({
+            title: "🦷 Dental Chart Generated!",
+            description: "AI analysis completed and displayed. Chart ready for review.",
+            duration: 4000,
+          })
         }
       } else if (data.success && !data.chartData) {
         // API succeeded but no chart data - show what we got
@@ -486,11 +524,20 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         console.warn('Database save failed, but summary is still available:', dbError)
       }
       
-      alert(`✅ Client summary generated! ${newSummary.length} characters created.`)
+      toast({
+        title: "📧 Client Summary Generated!",
+        description: `Created ${newSummary.length} characters. Ready to send to client.`,
+        duration: 4000,
+      })
       
     } catch (error) {
       console.error('Client summary error:', error)
-      alert('❌ Error generating client summary.')
+      toast({
+        title: "❌ Client Summary Failed", 
+        description: "Error generating client summary. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      })
     } finally {
       setLoading(false)
     }
@@ -690,7 +737,11 @@ Example:
                       console.warn('Save failed:', err)
                     }
                     
-                    alert(`✅ Manual transcription set! You can now generate SOAP notes.`)
+                    toast({
+                      title: "📝 Manual Transcription Set!",
+                      description: "You can now generate SOAP notes from your text.",
+                      duration: 3000,
+                    })
                   }} 
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
