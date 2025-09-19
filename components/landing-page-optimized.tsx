@@ -27,7 +27,7 @@ export function LandingPageOptimized() {
             <div className="mb-12 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg p-6">
               <div className="text-center">
                 <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-3">
-                  🚀 FREE BETA • Limited Time
+                  Free Beta Access — Through Q4 2025
                 </div>
                 <p className="text-base font-medium text-foreground mb-2">
                   VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
@@ -39,7 +39,7 @@ export function LandingPageOptimized() {
                 {/* Banner CTA */}
                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2" asChild>
                   <a href="/sign-in">
-                    🔒 Secure Founder Pricing
+                    Secure Founder Pricing
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
@@ -264,7 +264,7 @@ export function LandingPageOptimized() {
           <div className="text-center mt-20">
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg" asChild>
               <a href="/sign-in">
-                🚀 Start Free Beta Access
+                Start Free Beta Access
                 <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
@@ -418,7 +418,7 @@ export function LandingPageOptimized() {
             <Card className="relative border-2 border-primary bg-background">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-primary text-primary-foreground px-6 py-2 text-sm font-semibold">
-                  🚀 FREE BETA ACCESS
+                  FREE BETA ACCESS
                 </Badge>
               </div>
               <CardContent className="pt-12 pb-8">
@@ -489,7 +489,7 @@ export function LandingPageOptimized() {
 
                   <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg" asChild>
                     <a href="/sign-in">
-                      🚀 Secure Your Founder Pricing
+                      Secure Your Founder Pricing
                     </a>
                   </Button>
                   
@@ -514,7 +514,7 @@ export function LandingPageOptimized() {
           <div className="flex items-center justify-center mb-8">
             <Button size="lg" className="bg-white text-primary hover:bg-gray-100 px-12 py-4 text-lg font-semibold" asChild>
               <a href="/sign-in">
-                🚀 Start Free Beta - 2 Minute Setup
+                Start Free Beta - 2 Minute Setup
               </a>
             </Button>
           </div>
