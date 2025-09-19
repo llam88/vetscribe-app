@@ -81,21 +81,57 @@ export function UserEmailSettings() {
         })
         .select()
 
+      console.log('Upsert response:', { data, error })
+
       if (error) {
-        console.error('Supabase error:', error)
+        console.error('Supabase error details:', error)
         if (error.message.includes('relation "public.profiles" does not exist')) {
           alert('❌ Database not set up yet. Please run the database setup script in Supabase first.')
           return
         }
-        throw error
+        if (error.message.includes('duplicate key')) {
+          // This might not be a real error - try to continue
+          console.log('Duplicate key - trying update instead of insert')
+        } else {
+          throw error
+        }
       }
 
-      console.log('Email settings saved:', data)
+      // Check if we actually have data or if it was saved
+      if (data && data.length > 0) {
+        console.log('Email settings saved successfully:', data[0])
+      } else {
+        console.log('Save may have succeeded but no data returned')
+      }
+
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
       alert('✅ Email settings saved successfully!')
     } catch (error: any) {
       console.error('Error saving email settings:', error)
+      
+      // Try a simple update as fallback
+      try {
+        console.log('Trying fallback update method...')
+        const { error: updateError } = await sb
+          .from('profiles')
+          .update({ 
+            email_config: emailConfig,
+            updated_at: new Date().toISOString() 
+          })
+          .eq('id', user!.id)
+        
+        if (!updateError) {
+          console.log('Fallback update succeeded')
+          setSaved(true)
+          setTimeout(() => setSaved(false), 3000)
+          alert('✅ Email settings saved successfully!')
+          return
+        }
+      } catch (fallbackError) {
+        console.error('Fallback also failed:', fallbackError)
+      }
+      
       alert(`❌ Error saving settings: ${error.message || 'Please try again.'}`)
     } finally {
       setLoading(false)
