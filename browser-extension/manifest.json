@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "VetScribe PIMS Transfer",
+  "version": "1.0.0",
+  "description": "1-click transfer of veterinary notes to practice management systems",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "clipboardWrite"
+  ],
+  
+  "host_permissions": [
+    "https://app.ezyvet.com/*",
+    "https://*.avimark.com/*",
+    "https://*.impromed.com/*",
+    "https://*.vetblue.com/*",
+    "https://*.pulse.vet/*",
+    "https://*.vetspire.com/*"
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "VetScribe Transfer"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "https://app.ezyvet.com/*",
+        "https://*.avimark.com/*",
+        "https://*.impromed.com/*",
+        "https://*.vetblue.com/*",
+        "https://*.pulse.vet/*",
+        "https://*.vetspire.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

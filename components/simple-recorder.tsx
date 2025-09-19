@@ -22,6 +22,7 @@ import {
 import { createClientBrowser } from "@/lib/supabase-browser"
 import { SOAPTemplateManager } from "@/components/soap-template-manager"
 import { defaultSOAPTemplates, type SOAPTemplate } from "@/data/soap-templates"
+import { PimsTransfer } from "@/components/pims-transfer"
 
 interface SimpleRecorderProps {
   appointment: any
@@ -1256,6 +1257,14 @@ Example:
           </div>
         </CardContent>
       </Card>
+      
+      {/* PIMS Transfer */}
+      <PimsTransfer appointmentData={{
+        ...appointment,
+        soap_note: soapNote,
+        client_summary: clientSummary,
+        transcription: transcription
+      }} />
       
       {/* Debug Information */}
       <Card className="bg-gray-50">
