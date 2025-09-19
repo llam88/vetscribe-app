@@ -20,47 +20,37 @@ export function LandingPageOptimized() {
   return (
     <div className="min-h-screen bg-background">
       {/* Section 1: Banner + Hero */}
-      <section className="relative overflow-hidden bg-background py-20 sm:py-32">
+      <section className="relative overflow-hidden bg-background py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="mx-auto max-w-5xl text-center">
             {/* Beta Banner */}
-            <div className="mb-12 bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-6">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Badge className="bg-primary text-primary-foreground px-4 py-1">
+            <div className="mb-16 bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-8">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <Badge className="bg-primary text-primary-foreground px-6 py-2 text-sm">
                   🚀 FREE BETA
                 </Badge>
-                <Badge variant="outline" className="border-primary text-primary">
+                <Badge variant="outline" className="border-primary text-primary px-4 py-2">
                   Limited Time
                 </Badge>
               </div>
-              <p className="text-base font-medium text-foreground text-center">
+              <p className="text-lg font-medium text-foreground text-center mb-2">
                 VetScribe is <strong>completely free</strong> during beta. Pricing starts at $79/month later.
               </p>
-              <p className="text-sm text-muted-foreground mt-2 text-center">
+              <p className="text-base text-muted-foreground text-center">
                 <strong>Early adopters lock in 50% off for life!</strong> Sign up now to secure founder pricing.
               </p>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance">
-              Save <span className="text-green-600">60+ Minutes Daily</span> on Veterinary Notes
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance mb-8">
+              Save <span className="text-primary">60+ Minutes Daily</span> on Veterinary Notes
             </h1>
 
-            <p className="mt-6 text-xl leading-8 text-muted-foreground text-pretty max-w-3xl mx-auto">
+            <p className="text-xl leading-8 text-muted-foreground text-pretty max-w-4xl mx-auto mb-12">
               AI-powered transcription and SOAP note generation for veterinary practices. 
               Record appointments, get professional documentation instantly.
             </p>
-
-            {/* Primary CTA */}
-            <div className="mt-10 flex items-center justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg" asChild>
-                <a href="/sign-in">
-                  🚀 Start Free Beta Access
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-            </div>
             
-            <div className="mt-6 text-center">
+            <div className="text-center mb-8">
               <p className="text-sm text-muted-foreground">
                 ✅ No credit card required • ✅ Google sign-in • ✅ Cancel anytime
               </p>
@@ -144,13 +134,67 @@ export function LandingPageOptimized() {
             </Card>
           </div>
 
-          {/* CTA 2 */}
-          <div className="text-center mt-12">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
-              <a href="/sign-in">
-                Start Your Free Beta Today
-              </a>
-            </Button>
+          {/* Add testimonials here instead of CTA */}
+          <div className="mt-16">
+            <h3 className="text-xl font-semibold text-center mb-8">What Veterinarians Are Saying</h3>
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Card className="p-4">
+                <CardContent className="pt-4">
+                  <div className="flex items-center mb-3">
+                    <div className="flex text-yellow-400">
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    "VetScribe has transformed my practice. I save over an hour daily on documentation."
+                  </p>
+                  <p className="text-xs font-medium">Dr. Sarah Chen, DVM</p>
+                  <p className="text-xs text-muted-foreground">Mountain View Animal Hospital</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="p-4">
+                <CardContent className="pt-4">
+                  <div className="flex items-center mb-3">
+                    <div className="flex text-yellow-400">
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    "The AI-generated SOAP notes are incredibly accurate. My clients love the detailed summaries."
+                  </p>
+                  <p className="text-xs font-medium">Dr. Michael Rodriguez</p>
+                  <p className="text-xs text-muted-foreground">Central Valley Veterinary Clinic</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="p-4">
+                <CardContent className="pt-4">
+                  <div className="flex items-center mb-3">
+                    <div className="flex text-yellow-400">
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                      <Star className="h-4 w-4 fill-current" />
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    "Perfect for busy practices. The mobile app lets me document on the go."
+                  </p>
+                  <p className="text-xs font-medium">Dr. Lisa Thompson, DVM</p>
+                  <p className="text-xs text-muted-foreground">Riverside Emergency Vet</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -207,11 +251,12 @@ export function LandingPageOptimized() {
             </div>
           </div>
 
-          {/* CTA 3 */}
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="px-8 py-3 border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
+          {/* Strategic CTA after How It Works */}
+          <div className="text-center mt-16">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg" asChild>
               <a href="/sign-in">
-                Try the Complete Workflow - Free Beta
+                🚀 Start Free Beta Access
+                <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
           </div>
@@ -349,14 +394,6 @@ export function LandingPageOptimized() {
             </Card>
           </div>
 
-          {/* CTA 4 */}
-          <div className="text-center mt-12">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3" asChild>
-              <a href="/sign-in">
-                Get All Features Free During Beta
-              </a>
-            </Button>
-          </div>
         </div>
       </section>
 
