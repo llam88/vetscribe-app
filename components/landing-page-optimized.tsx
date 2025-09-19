@@ -146,10 +146,10 @@ export function LandingPageOptimized() {
           {/* Add testimonials here instead of CTA */}
           <div className="mt-20">
             <h3 className="text-2xl font-bold text-center mb-12">What Veterinarians Are Saying</h3>
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <Card className="p-4">
-                <CardContent className="pt-4">
-                  <div className="flex items-center mb-3">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <Card className="p-6 hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex items-center mb-4">
                     <div className="flex text-yellow-400">
                       <Star className="h-4 w-4 fill-current" />
                       <Star className="h-4 w-4 fill-current" />
@@ -158,17 +158,29 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-muted-foreground mb-6 italic">
                     "VetScribe has transformed my practice. I save over an hour daily on documentation."
                   </p>
-                  <p className="text-xs font-medium">Dr. Sarah Chen, DVM</p>
-                  <p className="text-xs text-muted-foreground">Mountain View Animal Hospital</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-semibold text-sm">SC</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Dr. Sarah Chen, DVM</p>
+                      <div className="flex items-center gap-2">
+                        <div className="h-4 w-6 bg-green-100 rounded-sm flex items-center justify-center">
+                          <div className="h-2 w-2 bg-green-600 rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Mountain View Animal Hospital</p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
               
-              <Card className="p-4">
-                <CardContent className="pt-4">
-                  <div className="flex items-center mb-3">
+              <Card className="p-6 hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex items-center mb-4">
                     <div className="flex text-yellow-400">
                       <Star className="h-4 w-4 fill-current" />
                       <Star className="h-4 w-4 fill-current" />
@@ -177,17 +189,29 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-muted-foreground mb-6 italic">
                     "The AI-generated SOAP notes are incredibly accurate. My clients love the detailed summaries."
                   </p>
-                  <p className="text-xs font-medium">Dr. Michael Rodriguez</p>
-                  <p className="text-xs text-muted-foreground">Central Valley Veterinary Clinic</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center">
+                      <span className="text-purple-600 font-semibold text-sm">MR</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Dr. Michael Rodriguez</p>
+                      <div className="flex items-center gap-2">
+                        <div className="h-4 w-6 bg-blue-100 rounded-sm flex items-center justify-center">
+                          <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Central Valley Veterinary Clinic</p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
               
-              <Card className="p-4">
-                <CardContent className="pt-4">
-                  <div className="flex items-center mb-3">
+              <Card className="p-6 hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex items-center mb-4">
                     <div className="flex text-yellow-400">
                       <Star className="h-4 w-4 fill-current" />
                       <Star className="h-4 w-4 fill-current" />
@@ -196,11 +220,23 @@ export function LandingPageOptimized() {
                       <Star className="h-4 w-4 fill-current" />
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    "Perfect for busy practices. The mobile app lets me document on the go."
+                  <p className="text-sm text-muted-foreground mb-6 italic">
+                    "Perfect for busy practices. The documentation quality is consistently professional."
                   </p>
-                  <p className="text-xs font-medium">Dr. Lisa Thompson, DVM</p>
-                  <p className="text-xs text-muted-foreground">Riverside Emergency Vet</p>
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center">
+                      <span className="text-emerald-600 font-semibold text-sm">LT</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Dr. Lisa Thompson, DVM</p>
+                      <div className="flex items-center gap-2">
+                        <div className="h-4 w-6 bg-red-100 rounded-sm flex items-center justify-center">
+                          <div className="h-2 w-2 bg-red-600 rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Riverside Emergency Vet</p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
