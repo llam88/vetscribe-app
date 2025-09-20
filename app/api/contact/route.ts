@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, practice, subject, message } = await request.json()
+    const body = await request.json()
+    const { name, email, practice, subject, message } = body
+
+    // Log the raw request for debugging
+    console.log('📧 Contact form received:', { name, email, practice, subject, message })
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
+      console.log('❌ Missing required fields:', { name: !!name, email: !!email, subject: !!subject, message: !!message })
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -87,9 +92,8 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Contact form error:', error)
-    // Even if email fails, log the contact attempt and return success
-    console.log('Contact form submission (fallback):', { name, email, practice, subject, message })
+    console.error('❌ Contact form error:', error)
+    // Always return success to avoid user-facing errors
     return NextResponse.json({ 
       success: true, 
       message: 'Thank you for your message! We\'ll get back to you within 24 hours.' 
