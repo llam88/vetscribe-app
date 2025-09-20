@@ -40,7 +40,7 @@ export function Header() {
               FAQ
             </a>
             <a
-              href="mailto:hello@swiftvet.app"
+              href="#contact"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Contact

@@ -52,6 +52,44 @@ function FAQItem({ question, answer, isOpen, onToggle }: {
 export function LandingPageOptimized() {
   // Interactive FAQ accordion component
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+  const [contactLoading, setContactLoading] = useState(false)
+  const [contactMessage, setContactMessage] = useState('')
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setContactLoading(true)
+    setContactMessage('')
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      practice: formData.get('practice'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setContactMessage('✅ Thank you! We\'ll get back to you within 24 hours.')
+        e.currentTarget.reset()
+      } else {
+        setContactMessage('❌ ' + (result.error || 'Failed to send message. Please try again.'))
+      }
+    } catch (error) {
+      setContactMessage('❌ Failed to send message. Please try again.')
+    } finally {
+      setContactLoading(false)
+    }
+  }
 
   const faqData = [
     {
@@ -589,7 +627,125 @@ export function LandingPageOptimized() {
         </div>
       </section>
 
-      {/* Section 8: Final CTA */}
+      {/* Section 8: Contact Form */}
+      <section id="contact" className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Get In Touch</h2>
+            <p className="text-lg text-muted-foreground">Have questions? We'd love to help you get started with SwiftVet</p>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <Card>
+              <CardContent className="pt-8 pb-8">
+                <form className="space-y-6" onSubmit={handleContactSubmit}>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                        placeholder="Dr. John Smith"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                        placeholder="doctor@yourpractice.com"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="practice" className="block text-sm font-medium mb-2">
+                      Practice Name
+                    </label>
+                    <input
+                      type="text"
+                      id="practice"
+                      name="practice"
+                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                      placeholder="Your Veterinary Practice"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
+                      Subject *
+                    </label>
+                    <select
+                      id="subject"
+                      name="subject"
+                      required
+                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                    >
+                      <option value="">Select a topic</option>
+                      <option value="demo">Request a Demo</option>
+                      <option value="pricing">Pricing Questions</option>
+                      <option value="integration">PIMS Integration</option>
+                      <option value="support">Technical Support</option>
+                      <option value="partnership">Partnership Inquiry</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      Message *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                      placeholder="Tell us about your practice and how we can help..."
+                    />
+                  </div>
+                  
+                  <div className="text-center">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3"
+                      disabled={contactLoading}
+                    >
+                      {contactLoading ? 'Sending...' : 'Send Message'}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    {contactMessage && (
+                      <p className="mt-4 text-sm font-medium">{contactMessage}</p>
+                    )}
+                  </div>
+                </form>
+                
+                <div className="mt-8 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    Or email us directly at{" "}
+                    <a href="mailto:hello@swiftvet.app" className="text-primary hover:text-primary/80 font-medium">
+                      hello@swiftvet.app
+                    </a>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: Final CTA */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Save 60+ Minutes Daily?</h2>
