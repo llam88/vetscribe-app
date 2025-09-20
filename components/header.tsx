@@ -39,6 +39,12 @@ export function Header() {
             >
               FAQ
             </a>
+            <a
+              href="mailto:hello@swiftvet.app"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
+            </a>
           </nav>
 
           <div className="flex items-center gap-4">

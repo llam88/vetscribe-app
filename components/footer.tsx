@@ -16,6 +16,14 @@ export function Footer() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               AI-powered veterinary notes that save time and improve accuracy. Focus on what matters most - your patients.
             </p>
+            <div className="mt-4">
+              <a 
+                href="mailto:hello@swiftvet.app" 
+                className="text-sm text-primary hover:text-primary/80 font-medium"
+              >
+                hello@swiftvet.app
+              </a>
+            </div>
           </div>
 
           <div>

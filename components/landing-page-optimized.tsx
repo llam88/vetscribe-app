@@ -607,6 +607,9 @@ export function LandingPageOptimized() {
 
           <div className="text-center text-sm opacity-80">
             <p>✅ No credit card required • ✅ Google sign-in • ✅ Founder pricing guaranteed</p>
+            <p className="mt-2">
+              Questions? Email us at <a href="mailto:hello@swiftvet.app" className="text-white underline hover:no-underline">hello@swiftvet.app</a>
+            </p>
           </div>
         </div>
       </section>
