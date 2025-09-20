@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   themeColor: '#0ea5e9',
   icons: {
-    icon: '/swiftvet-icon.ico',
-    shortcut: '/swiftvet-icon.ico',
-    apple: '/favicon.svg',
+    icon: '/fav.png',
+    shortcut: '/fav.png',
+    apple: '/fav.png',
   },
 }
 
