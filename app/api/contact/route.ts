@@ -42,7 +42,35 @@ export async function POST(request: NextRequest) {
       </div>
     `
 
-    // Log the contact form submission (you can check Vercel logs)
+    // Try to send email via Resend (if API key is available)
+    try {
+      if (process.env.RESEND_API_KEY) {
+        const resendResponse = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'onboarding@resend.dev', // Verified Resend domain
+            to: 'hello@swiftvet.app',
+            subject: `SwiftVet Contact: ${subject} - ${name}`,
+            html: emailHtml,
+            reply_to: email
+          })
+        })
+
+        if (resendResponse.ok) {
+          console.log('✅ Contact email sent successfully via Resend')
+        } else {
+          console.log('❌ Resend failed, logging submission instead')
+        }
+      }
+    } catch (emailError) {
+      console.log('❌ Email sending failed, logging submission:', emailError)
+    }
+
+    // Always log the submission as backup
     console.log('📧 NEW CONTACT FORM SUBMISSION:', {
       timestamp: new Date().toISOString(),
       name,
@@ -53,7 +81,6 @@ export async function POST(request: NextRequest) {
       source: 'SwiftVet Contact Form'
     })
 
-    // Always return success - you'll see submissions in Vercel logs
     return NextResponse.json({ 
       success: true, 
       message: 'Thank you for your message! We\'ll get back to you within 24 hours.' 
