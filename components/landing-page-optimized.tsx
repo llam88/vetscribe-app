@@ -85,7 +85,11 @@ export function LandingPageOptimized() {
 
       if (response.ok && result.success) {
         setContactMessage('✅ Thank you! We\'ll get back to you within 24 hours.')
-        e.currentTarget.reset()
+        // Safe form reset
+        const form = e.currentTarget
+        if (form) {
+          form.reset()
+        }
       } else {
         setContactMessage('❌ ' + (result.error || 'Failed to send message. Please try again.'))
       }
