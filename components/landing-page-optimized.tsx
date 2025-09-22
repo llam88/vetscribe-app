@@ -70,21 +70,27 @@ export function LandingPageOptimized() {
     }
 
     try {
+      console.log('🔍 Submitting contact form with data:', data)
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
 
+      console.log('🔍 Response status:', response.status)
+      
       const result = await response.json()
+      console.log('🔍 Response data:', result)
 
-      if (response.ok) {
+      if (response.ok && result.success) {
         setContactMessage('✅ Thank you! We\'ll get back to you within 24 hours.')
         e.currentTarget.reset()
       } else {
         setContactMessage('❌ ' + (result.error || 'Failed to send message. Please try again.'))
       }
     } catch (error) {
+      console.error('🔍 Form submission error:', error)
       setContactMessage('❌ Failed to send message. Please try again.')
     } finally {
       setContactLoading(false)
