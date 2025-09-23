@@ -62,19 +62,23 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">Third-Party Services</h2>
+            <h2 className="text-2xl font-semibold mb-4">Data Security & Processing</h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                <strong>Authentication:</strong> We use Supabase for secure authentication and Google/Microsoft OAuth 
-                for social login options.
+                <strong>Secure Authentication:</strong> We use industry-standard authentication methods including 
+                social login options for your convenience and security.
               </p>
               <p>
-                <strong>AI Processing:</strong> We use OpenAI services for transcription and documentation generation. 
-                All data is processed securely and not used for training.
+                <strong>AI Processing:</strong> Your veterinary data is processed using secure AI services to generate 
+                documentation. All processing is done securely and your data is not used for training purposes.
               </p>
               <p>
-                <strong>Email Services:</strong> When configured, we integrate with email providers (Resend, SendGrid) 
-                using your own API keys for client communications.
+                <strong>Email Communications:</strong> When you configure email settings, we use secure email services 
+                to send client communications on your behalf using your own credentials.
+              </p>
+              <p>
+                <strong>Data Encryption:</strong> All data is encrypted in transit and at rest using industry-standard 
+                encryption protocols to ensure maximum security.
               </p>
             </div>
           </section>
@@ -100,7 +104,7 @@ export default function PrivacyPage() {
                 please contact us at:
               </p>
               <p>
-                <strong>Email:</strong> privacy@vetscribe.com<br/>
+                <strong>Email:</strong> hello@swiftvet.app<br/>
                 <strong>Address:</strong> [Your Business Address]
               </p>
             </div>
