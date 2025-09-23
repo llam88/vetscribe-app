@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            from: 'onboarding@resend.dev',
+            from: 'contact@swiftvet.app',
             to: 'hello@swiftvet.app',
             subject: `SwiftVet Contact: ${subject} - ${name}`,
             html: emailHtml,
