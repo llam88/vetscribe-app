@@ -31,22 +31,22 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/appointments" className="hover:text-foreground transition-colors">
-                  📅 Appointments & Recording
+                  Appointments & Recording
                 </Link>
               </li>
               <li>
                 <Link href="/patients" className="hover:text-foreground transition-colors">
-                  🐕 Patient Management
+                  Patient Management
                 </Link>
               </li>
               <li>
                 <Link href="/communication" className="hover:text-foreground transition-colors">
-                  📧 Client Communication
+                  Client Communication
                 </Link>
               </li>
               <li>
                 <Link href="/notes" className="hover:text-foreground transition-colors">
-                  📝 SOAP Notes & Charts
+                  SOAP Notes & Charts
                 </Link>
               </li>
             </ul>
@@ -57,22 +57,22 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link href="/sign-in" className="hover:text-foreground transition-colors">
-                  🚀 Start Free Beta
+                  Start Free Beta
                 </Link>
               </li>
               <li>
                 <a href="#how-it-works" className="hover:text-foreground transition-colors">
-                  ❓ How It Works
+                  How It Works
                 </a>
               </li>
               <li>
                 <a href="#features" className="hover:text-foreground transition-colors">
-                  ⭐ Features Overview
+                  Features Overview
                 </a>
               </li>
               <li>
                 <Link href="/sign-in" className="hover:text-foreground transition-colors">
-                  🔑 Sign In
+                  Sign In
                 </Link>
               </li>
             </ul>
@@ -89,12 +89,12 @@ export function Footer() {
               <Link href="/terms" className="text-xs text-muted-foreground hover:text-foreground">
                 Terms of Service
               </Link>
-              <span className="text-xs text-muted-foreground">Made with ❤️ for veterinarians</span>
+              <span className="text-xs text-muted-foreground">Made for veterinarians</span>
             </div>
           </div>
           <div className="text-center mt-4">
             <p className="text-xs text-green-600 font-medium">
-              🚀 FREE BETA - Early adopters get 50% off for life!
+              FREE BETA - Early adopters get 50% off for life!
             </p>
           </div>
         </div>
