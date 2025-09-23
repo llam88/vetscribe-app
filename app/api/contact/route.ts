@@ -9,6 +9,8 @@ export async function POST(request: NextRequest) {
       name, email, practice, subject, message,
       timestamp: new Date().toISOString()
     })
+    
+    console.log('🔧 RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
 
     // Send email via Resend if API key is available
     if (process.env.RESEND_API_KEY) {
