@@ -485,16 +485,19 @@ Your Veterinary Team`
                         asChild
                         variant="ghost" 
                         size="sm"
+                        className="w-full sm:w-auto text-sm px-3 py-2"
                       >
-                        <a href={`/appointments/${appointment.id}`}>
-                          <Eye className="h-4 w-4" />
+                        <a href={`/appointments/${appointment.id}`} className="flex items-center justify-center">
+                          <Eye className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">View Details</span>
                         </a>
                       </Button>
                       
                       <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="h-4 w-4" />
+                        <Button variant="ghost" size="sm" className="w-full sm:w-auto text-sm px-3 py-2">
+                          <MoreHorizontal className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">More</span>
                         </Button>
                       </DialogTrigger>
                       <DialogContent>
