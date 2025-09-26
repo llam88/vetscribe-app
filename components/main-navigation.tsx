@@ -15,7 +15,8 @@ import {
   FileText,
   Crown,
   Menu,
-  X
+  X,
+  Lightbulb
 } from "lucide-react"
 
 type NavigationItem = {
@@ -32,6 +33,7 @@ const navigationItems: NavigationItem[] = [
   { href: "/patients", label: "Patients", icon: Users },
   { href: "/communication", label: "Communication", icon: Mail },
   { href: "/templates", label: "Templates", icon: FileText, badge: "New" },
+  { href: "/feature-requests", label: "Feature Requests", icon: Lightbulb, badge: "Beta" },
   { href: "/settings", label: "Settings", icon: Settings }
 ]
 
