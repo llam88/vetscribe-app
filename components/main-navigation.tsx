@@ -55,8 +55,8 @@ export function MainNavigation() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex items-center justify-center flex-1">
+          {/* Desktop Navigation - Left Aligned */}
+          <div className="hidden md:flex items-center flex-1 ml-12">
             <div className="flex items-center space-x-6">
             {navigationItems.map((item) => {
               const Icon = item.icon
@@ -85,9 +85,6 @@ export function MainNavigation() {
             </div>
           </div>
 
-          {/* Right side spacer for balance */}
-          <div className="hidden md:flex items-center w-32">
-          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
