@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Mobile overflow fixes */
+@media (max-width: 640px) {
+  .mobile-button-container {
+    @apply flex flex-col gap-2 w-full;
+  }
+  
+  .mobile-button {
+    @apply w-full text-sm px-3 py-2 min-w-0;
+  }
+  
+  .mobile-button span {
+    @apply truncate;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
