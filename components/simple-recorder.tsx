@@ -785,29 +785,49 @@ Example:
                   />
                 </div>
                 
-                <div className="flex gap-2">
-                  <Button onClick={() => navigator.clipboard.writeText(transcription)} variant="outline">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+                  <Button 
+                    onClick={() => navigator.clipboard.writeText(transcription)} 
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                  >
                     <Copy className="h-4 w-4 mr-2" />
                     Copy Transcription
                   </Button>
-                  <div className="flex gap-2">
-                    <Button onClick={() => generateSOAP()} disabled={loading}>
+                  
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button 
+                      onClick={() => generateSOAP()} 
+                      disabled={loading}
+                      className="w-full sm:w-auto"
+                    >
                       {loading ? "🔄 Generating..." : "📋 Generate SOAP Note"}
                     </Button>
-                    <Button onClick={() => setShowTemplateSelector(true)} disabled={loading} variant="outline">
+                    <Button 
+                      onClick={() => setShowTemplateSelector(true)} 
+                      disabled={loading} 
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                    >
                       📋 Use Template
                     </Button>
                   </div>
-                  <Button onClick={generateClientSummary} disabled={loading} variant="outline">
+                  
+                  <Button 
+                    onClick={generateClientSummary} 
+                    disabled={loading} 
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                  >
                     {loading ? "🔄 Generating..." : "📧 Generate Client Summary"}
                   </Button>
                   
-                  {/* Dental Chart Generation - Only shown when dental keywords detected */}
+                  {/* Dental Chart Generation - Mobile Optimized */}
                   {dentalKeywordsDetected && (
                     <Button 
                       onClick={generateDentalChart} 
                       disabled={!soapNote || loading}
-                      className="bg-purple-600 hover:bg-purple-700"
+                      className="bg-purple-600 hover:bg-purple-700 w-full sm:w-auto"
                     >
                       <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
