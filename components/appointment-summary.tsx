@@ -196,23 +196,27 @@ export function AppointmentSummary({ appointment }: AppointmentSummaryProps) {
       {/* Quick Actions */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Button variant="outline" asChild>
-              <a href="/appointments">← Back to Appointments</a>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-center">
+            <Button variant="outline" asChild className="w-full sm:w-auto text-sm px-3 py-2">
+              <a href="/appointments" className="flex items-center justify-center">
+                <span className="truncate">← Back to Appointments</span>
+              </a>
             </Button>
-            <Button variant="outline" asChild>
-              <a href="/dashboard">🏠 Dashboard</a>
+            <Button variant="outline" asChild className="w-full sm:w-auto text-sm px-3 py-2">
+              <a href="/dashboard" className="flex items-center justify-center">
+                <span className="truncate">🏠 Dashboard</span>
+              </a>
             </Button>
-            <Button asChild>
-              <a href={`/appointments/${appointment.id}/record`}>
-                📝 Continue Recording
+            <Button asChild className="w-full sm:w-auto text-sm px-3 py-2">
+              <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center">
+                <span className="truncate">📝 Continue Recording</span>
               </a>
             </Button>
             {(hasSOAP || hasSummary) && (
-              <Button asChild className="bg-green-600 hover:bg-green-700">
-                <a href="/communication">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Send Client Email
+              <Button asChild className="bg-green-600 hover:bg-green-700 w-full sm:w-auto text-sm px-3 py-2">
+                <a href="/communication" className="flex items-center justify-center">
+                  <Mail className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="truncate">Send Client Email</span>
                 </a>
               </Button>
             )}

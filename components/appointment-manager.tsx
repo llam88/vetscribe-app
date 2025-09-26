@@ -450,17 +450,19 @@ Your Veterinary Team`
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="flex flex-col gap-2 w-full">
                     {/* Primary action: Record if not started, Continue if in progress */}
                     {!appointment.transcription ? (
                       <Button 
                         asChild
                         size="sm"
-                        className="bg-red-500 hover:bg-red-600 text-white w-full sm:w-auto"
+                        className="bg-red-500 hover:bg-red-600 text-white w-full text-sm px-3 py-2"
                       >
-                        <a href={`/appointments/${appointment.id}/record`}>
-                          <Mic className="h-4 w-4 mr-2" />
-                          {appointment.status === 'pending' ? 'Start Recording' : 'Continue'}
+                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center">
+                          <Mic className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">
+                            {appointment.status === 'pending' ? 'Start Recording' : 'Continue'}
+                          </span>
                         </a>
                       </Button>
                     ) : (
@@ -468,17 +470,17 @@ Your Veterinary Team`
                         asChild
                         size="sm"
                         variant="outline"
-                        className="w-full sm:w-auto"
+                        className="w-full text-sm px-3 py-2"
                       >
-                        <a href={`/appointments/${appointment.id}/record`}>
-                          <FileText className="h-4 w-4 mr-2" />
-                          Review
+                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center">
+                          <FileText className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">Review</span>
                         </a>
                       </Button>
                     )}
                     
-                    {/* Secondary actions - keep horizontal on mobile */}
-                    <div className="flex items-center gap-2 justify-center sm:justify-start">
+                    {/* Secondary actions - stack on mobile */}
+                    <div className="flex flex-col sm:flex-row gap-2 w-full">
                       <Button 
                         asChild
                         variant="ghost" 
