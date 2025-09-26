@@ -92,6 +92,7 @@ export function AppointmentManager() {
         user_id: user.id,
         patient_name: newAppointment.patient_name,
         owner_name: newAppointment.owner_name,
+        owner_phone: newAppointment.owner_phone,
         species: newAppointment.species,
         breed: newAppointment.breed,
         appointment_type: newAppointment.appointment_type,
