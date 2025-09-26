@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Mobile overflow fixes */
+/* Mobile overflow fixes - Conservative approach */
 @media (max-width: 640px) {
-  /* Force all buttons to respect container width */
-  [data-slot="button"] {
-    @apply min-w-0 max-w-full;
+  /* Only fix specific overflow issues */
+  .mobile-safe-button {
+    @apply min-w-0 max-w-full text-sm;
   }
 }
 

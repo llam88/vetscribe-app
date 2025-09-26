@@ -44,6 +44,7 @@ export function AppointmentManager() {
   const [newAppointment, setNewAppointment] = useState({
     patient_name: "",
     owner_name: "",
+    owner_phone: "",
     species: "Dog",
     breed: "",
     appointment_type: "Wellness Exam",
@@ -450,7 +451,7 @@ Your Veterinary Team`
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col gap-2 w-full">
+                  <div className="flex flex-col gap-2 w-full px-2">
                     {/* Primary action: Record if not started, Continue if in progress */}
                     {!appointment.transcription ? (
                       <Button 
@@ -607,6 +608,21 @@ Your Veterinary Team`
                   placeholder="Enter owner name"
                 />
               </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="owner_phone">Owner Phone Number</Label>
+              <Input
+                id="owner_phone"
+                type="tel"
+                value={newAppointment.owner_phone}
+                onChange={(e) => setNewAppointment(prev => ({...prev, owner_phone: e.target.value}))}
+                placeholder="(555) 123-4567"
+                className="font-mono"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                📱 For SMS updates and appointment reminders
+              </p>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
