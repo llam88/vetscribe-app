@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SMSComposer } from "@/components/sms-composer"
 import { Smartphone, Mail, MessageSquare } from "lucide-react"
+import { ClientCommunicationHubEnhanced } from "@/components/client-communication-hub-enhanced"
 
 interface SMSCommunicationTabProps {
   appointments: any[]
@@ -148,15 +149,7 @@ export function SMSCommunicationTab({ appointments }: SMSCommunicationTabProps) 
         </TabsContent>
 
         <TabsContent value="email">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center py-8 text-muted-foreground">
-                <Mail className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                <p>Email communication system</p>
-                <p className="text-sm">Your existing email features will be integrated here</p>
-              </div>
-            </CardContent>
-          </Card>
+          <ClientCommunicationHubEnhanced appointments={appointments} />
         </TabsContent>
       </Tabs>
     </div>
