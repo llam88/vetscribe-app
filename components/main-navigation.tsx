@@ -55,9 +55,8 @@ export function MainNavigation() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Left Aligned */}
-          <div className="hidden md:flex items-center flex-1 ml-12">
-            <div className="flex items-center space-x-6">
+          {/* Desktop Navigation - Evenly Spaced */}
+          <div className="hidden md:flex items-center flex-1 justify-evenly px-8">
             {navigationItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href
@@ -82,9 +81,7 @@ export function MainNavigation() {
                 </Link>
               )
             })}
-            </div>
           </div>
-
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
