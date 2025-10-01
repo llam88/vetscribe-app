@@ -4,8 +4,11 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
-import { CalendarDays, FileText, Users, TrendingUp, Clock, AlertCircle, Activity, Stethoscope, Plus } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { CalendarDays, FileText, Users, TrendingUp, Clock, AlertCircle, Activity, Stethoscope, Plus, Mic, ChevronDown, Calendar } from "lucide-react"
 import Link from "next/link"
+import { QuickRecordModal } from "@/components/quick-record-modal"
+import { useState } from "react"
 
 interface DashboardOverviewProps {
   appointments: any[]
@@ -19,6 +22,7 @@ interface DashboardOverviewProps {
 }
 
 export function DashboardOverview({ appointments, patients, stats }: DashboardOverviewProps) {
+  const [showQuickRecord, setShowQuickRecord] = useState(false)
   // Calculate additional metrics
   const completionRate = appointments.length > 0 ? Math.round((appointments.filter(apt => apt.soap_note).length / appointments.length) * 100) : 0
   const avgProcessingTime = "2.3 min" // This would be calculated from actual data
@@ -52,13 +56,50 @@ export function DashboardOverview({ appointments, patients, stats }: DashboardOv
           <p className="text-muted-foreground">Welcome back! Here's your practice overview.</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/record">
-            <Button size="sm" className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              New Recording
-            </Button>
-          </Link>
+          {/* Smart Recording Button with Dropdown */}
+          <DropdownMenu>
+            <div className="flex">
+              {/* Main Quick Record Button */}
+              <Button 
+                size="sm" 
+                className="bg-red-500 hover:bg-red-600 rounded-r-none"
+                onClick={() => setShowQuickRecord(true)}
+              >
+                <Mic className="h-4 w-4 mr-2" />
+                Start Recording
+              </Button>
+              
+              {/* Dropdown Arrow */}
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  size="sm" 
+                  className="bg-red-500 hover:bg-red-600 rounded-l-none border-l border-red-400 px-2"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+            </div>
+            
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setShowQuickRecord(true)}>
+                <Mic className="h-4 w-4 mr-2" />
+                Quick Record (Walk-in)
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/appointments">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Record Scheduled Appointment
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+
+        {/* Quick Record Modal */}
+        <QuickRecordModal 
+          isOpen={showQuickRecord} 
+          onClose={() => setShowQuickRecord(false)} 
+        />
       </div>
 
       {/* Main Statistics Grid */}
