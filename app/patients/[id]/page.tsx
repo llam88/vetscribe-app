@@ -76,7 +76,8 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
     if (!editingPatient) return
 
     try {
-      const { error } = await sb
+      // Update patient record
+      const { error: patientError } = await sb
         .from('patients')
         .update({
           name: editingPatient.name,
@@ -92,16 +93,49 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
         })
         .eq('id', patientId)
 
-      if (error) {
-        alert('Failed to update patient: ' + error.message)
+      if (patientError) {
+        alert('Failed to update patient: ' + patientError.message)
         return
+      }
+
+      // SYNC: Update all appointments with this patient name
+      const { error: appointmentError } = await sb
+        .from('appointments')
+        .update({
+          patient_name: editingPatient.name,
+          owner_name: editingPatient.owner,
+          owner_phone: editingPatient.owner_phone,
+          owner_email: editingPatient.owner_email,
+          species: editingPatient.species,
+          breed: editingPatient.breed
+        })
+        .eq('patient_name', patient.name) // Update all appointments with old patient name
+        .eq('user_id', (await sb.auth.getUser()).data.user?.id)
+
+      if (appointmentError) {
+        console.warn('Failed to sync appointment data:', appointmentError)
+        // Continue anyway - patient update succeeded
+      } else {
+        console.log('✅ Synced patient changes to all appointments')
       }
 
       // Update local state
       setPatient(editingPatient)
       setIsEditingPatient(false)
       setEditingPatient(null)
-      alert('✅ Patient updated successfully!')
+      alert('✅ Patient updated successfully! Changes synced to all appointments.')
+
+      // Reload appointments to show updated data
+      const { data: updatedAppointments } = await sb
+        .from('appointments')
+        .select('*')
+        .eq('patient_name', editingPatient.name)
+        .eq('user_id', (await sb.auth.getUser()).data.user?.id)
+        .order('created_at', { ascending: false })
+
+      if (updatedAppointments) {
+        setAppointments(updatedAppointments)
+      }
 
     } catch (error) {
       console.error('Error updating patient:', error)

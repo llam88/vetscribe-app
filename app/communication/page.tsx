@@ -8,7 +8,7 @@ export default async function CommunicationPage() {
   const { data: { user } } = await sb.auth.getUser()
   if (!user) redirect("/sign-in")
 
-  // Get appointments with owner contact info
+  // Get appointments with owner contact info (fresh data every time)
   let appointments = []
   
   try {
@@ -16,9 +16,10 @@ export default async function CommunicationPage() {
       .from('appointments')
       .select('*')
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .order('updated_at', { ascending: false }) // Order by updated_at to show recent changes first
     
     appointments = data || []
+    console.log('📧 Communication tab loaded appointments:', appointments.length)
   } catch (error) {
     console.warn('Appointments table may not exist yet:', error)
     appointments = []
