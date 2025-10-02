@@ -9,6 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FileText, Mail, Calendar, User, Stethoscope, Edit } from "lucide-react"
 
 export default function PatientDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -18,6 +22,8 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
   const [appointments, setAppointments] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [patientId, setPatientId] = useState<string>("")
+  const [isEditingPatient, setIsEditingPatient] = useState(false)
+  const [editingPatient, setEditingPatient] = useState<any>(null)
 
   useEffect(() => {
     const loadData = async () => {
@@ -60,6 +66,48 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
 
     loadData()
   }, [params, router, sb])
+
+  const handleEditPatient = () => {
+    setEditingPatient({ ...patient })
+    setIsEditingPatient(true)
+  }
+
+  const handleSaveEdit = async () => {
+    if (!editingPatient) return
+
+    try {
+      const { error } = await sb
+        .from('patients')
+        .update({
+          name: editingPatient.name,
+          species: editingPatient.species,
+          breed: editingPatient.breed,
+          age: editingPatient.age,
+          sex: editingPatient.sex,
+          weight: editingPatient.weight,
+          owner: editingPatient.owner,
+          owner_phone: editingPatient.owner_phone,
+          owner_email: editingPatient.owner_email,
+          notes: editingPatient.notes
+        })
+        .eq('id', patientId)
+
+      if (error) {
+        alert('Failed to update patient: ' + error.message)
+        return
+      }
+
+      // Update local state
+      setPatient(editingPatient)
+      setIsEditingPatient(false)
+      setEditingPatient(null)
+      alert('✅ Patient updated successfully!')
+
+    } catch (error) {
+      console.error('Error updating patient:', error)
+      alert('Failed to update patient. Please try again.')
+    }
+  }
 
   if (loading) {
     return (
@@ -109,7 +157,7 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={handleEditPatient}>
                     <Edit className="h-4 w-4 mr-2" />
                     Edit Patient
                   </Button>
@@ -508,6 +556,145 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
           </Card>
         </div>
       </div>
+
+      {/* Edit Patient Dialog */}
+      <Dialog open={isEditingPatient} onOpenChange={setIsEditingPatient}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Patient: {editingPatient?.name}</DialogTitle>
+          </DialogHeader>
+          {editingPatient && (
+            <div className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <Label htmlFor="edit-patient-name">Patient Name</Label>
+                  <Input
+                    id="edit-patient-name"
+                    value={editingPatient.name || ''}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, name: e.target.value })}
+                    placeholder="e.g., Buddy"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-species">Species</Label>
+                  <Select
+                    value={editingPatient.species || 'Dog'}
+                    onValueChange={(value) => setEditingPatient({ ...editingPatient, species: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select species" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Dog">Dog</SelectItem>
+                      <SelectItem value="Cat">Cat</SelectItem>
+                      <SelectItem value="Bird">Bird</SelectItem>
+                      <SelectItem value="Rabbit">Rabbit</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-breed">Breed</Label>
+                  <Input
+                    id="edit-breed"
+                    value={editingPatient.breed || ''}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, breed: e.target.value })}
+                    placeholder="e.g., Golden Retriever"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-age">Age</Label>
+                  <Input
+                    id="edit-age"
+                    value={editingPatient.age || ''}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, age: e.target.value })}
+                    placeholder="e.g., 5 years"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-sex">Sex</Label>
+                  <Select
+                    value={editingPatient.sex || ''}
+                    onValueChange={(value) => setEditingPatient({ ...editingPatient, sex: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select sex" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                      <SelectItem value="Male Neutered">Male Neutered</SelectItem>
+                      <SelectItem value="Female Spayed">Female Spayed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-weight">Weight</Label>
+                  <Input
+                    id="edit-weight"
+                    value={editingPatient.weight || ''}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, weight: e.target.value })}
+                    placeholder="e.g., 45 lbs"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="font-semibold">Owner Information</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label htmlFor="edit-owner-name">Owner Name</Label>
+                    <Input
+                      id="edit-owner-name"
+                      value={editingPatient.owner || ''}
+                      onChange={(e) => setEditingPatient({ ...editingPatient, owner: e.target.value })}
+                      placeholder="e.g., John Smith"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-owner-phone">Phone</Label>
+                    <Input
+                      id="edit-owner-phone"
+                      value={editingPatient.owner_phone || ''}
+                      onChange={(e) => setEditingPatient({ ...editingPatient, owner_phone: e.target.value })}
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-owner-email">Email</Label>
+                    <Input
+                      id="edit-owner-email"
+                      type="email"
+                      value={editingPatient.owner_email || ''}
+                      onChange={(e) => setEditingPatient({ ...editingPatient, owner_email: e.target.value })}
+                      placeholder="owner@email.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="edit-notes">Notes</Label>
+                <Input
+                  id="edit-notes"
+                  value={editingPatient.notes || ''}
+                  onChange={(e) => setEditingPatient({ ...editingPatient, notes: e.target.value })}
+                  placeholder="Additional notes about the patient"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4">
+                <Button variant="outline" onClick={() => setIsEditingPatient(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdit} className="bg-primary hover:bg-primary/90">
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
