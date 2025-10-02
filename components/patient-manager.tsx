@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Search, Plus, Edit, Trash2, Eye, Calendar, Phone, Mail, MapPin, Heart, User } from "lucide-react"
+import { createClientBrowser } from "@/lib/supabase-browser"
+import { useEffect } from "react"
 
 // Mock patient data
 const mockPatients = [
@@ -123,14 +125,72 @@ const mockPatients = [
 ]
 
 export function PatientManager() {
-  const [patients, setPatients] = useState(mockPatients)
-  const [selectedPatient, setSelectedPatient] = useState(mockPatients[0])
+  const sb = createClientBrowser()
+  const [patients, setPatients] = useState<any[]>([])
+  const [selectedPatient, setSelectedPatient] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [filterSpecies, setFilterSpecies] = useState("all")
   const [filterStatus, setFilterStatus] = useState("all")
   const [isAddingPatient, setIsAddingPatient] = useState(false)
   const [isEditingPatient, setIsEditingPatient] = useState(false)
   const [editingPatient, setEditingPatient] = useState<any>(null)
+
+  // Load patients from database
+  const loadPatients = async () => {
+    try {
+      setLoading(true)
+      const { data: { user } } = await sb.auth.getUser()
+      if (!user) return
+
+      const { data, error } = await sb
+        .from('patients')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.warn('Patients table may not exist yet:', error)
+        // Fallback to mock data if database isn't set up
+        setPatients(mockPatients)
+        setSelectedPatient(mockPatients[0])
+      } else {
+        // Transform database patients to match UI structure
+        const transformedPatients = (data || []).map(patient => ({
+          ...patient,
+          owner: {
+            name: patient.owner || 'Unknown Owner',
+            phone: patient.owner_phone || '',
+            email: patient.owner_email || '',
+            address: ''
+          },
+          medicalHistory: [],
+          vaccinations: [],
+          allergies: ['None known'],
+          medications: [],
+          status: 'Active',
+          lastVisit: new Date(patient.created_at).toISOString().split('T')[0],
+          nextAppointment: ''
+        }))
+        
+        setPatients(transformedPatients)
+        if (transformedPatients.length > 0) {
+          setSelectedPatient(transformedPatients[0])
+        }
+      }
+    } catch (error) {
+      console.warn('Error loading patients:', error)
+      // Fallback to mock data
+      setPatients(mockPatients)
+      setSelectedPatient(mockPatients[0])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadPatients()
+  }, [])
 
   const [newPatient, setNewPatient] = useState({
     name: "",
