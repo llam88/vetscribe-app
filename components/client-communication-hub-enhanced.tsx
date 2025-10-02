@@ -142,7 +142,7 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
           appointmentId: appointment.id,
           subject: `${appointment.patient_name}'s Visit Summary`,
           body: result.email,
-          recipientEmail: '',
+          recipientEmail: appointment.owner_email || '',
           patientName: appointment.patient_name,
           ownerName: appointment.owner_name,
           lastModified: new Date().toISOString()
