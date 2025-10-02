@@ -25,6 +25,8 @@ interface Appointment {
   id: string
   patient_name: string
   owner_name: string
+  owner_phone?: string
+  owner_email?: string
   species: string
   appointment_type: string
   created_at: string
