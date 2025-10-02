@@ -510,14 +510,15 @@ export function PatientManager() {
 
         {/* Patient Details */}
         <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    <Heart className="h-5 w-5 text-primary" />
-                    {selectedPatient.name}
-                  </CardTitle>
+          {selectedPatient ? (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Heart className="h-5 w-5 text-primary" />
+                      {selectedPatient.name}
+                    </CardTitle>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
                     <span>
                       {selectedPatient.species} • {selectedPatient.breed}
@@ -735,6 +736,17 @@ export function PatientManager() {
               </Tabs>
             </CardContent>
           </Card>
+          ) : (
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center py-8 text-muted-foreground">
+                  <Heart className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                  <p className="text-lg">Select a patient to view details</p>
+                  <p className="text-sm">Click on a patient from the list to see their information</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
 
