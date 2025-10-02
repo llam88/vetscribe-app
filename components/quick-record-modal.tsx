@@ -61,6 +61,48 @@ export function QuickRecordModal({ isOpen, onClose }: QuickRecordModalProps) {
         return
       }
 
+      // Auto-create patient record (same as regular appointment workflow)
+      try {
+        console.log('Checking if patient exists:', patientName.trim())
+        
+        const { data: existingPatients, error: searchError } = await sb
+          .from('patients')
+          .select('id, name')
+          .eq('name', patientName.trim())
+          .eq('user_id', user.id)
+          .limit(1)
+        
+        if (!existingPatients || existingPatients.length === 0) {
+          console.log('Patient not found, creating new patient record')
+          
+          const patientData = {
+            user_id: user.id,
+            name: patientName.trim(),
+            owner: 'Unknown Owner', // Can be updated later
+            species: species,
+            breed: '', // Can be updated later
+            notes: `Auto-created from quick record session`,
+            created_at: new Date().toISOString()
+          }
+          
+          const { data: newPatient, error: patientError } = await sb
+            .from('patients')
+            .insert(patientData)
+            .select()
+          
+          if (patientError) {
+            console.warn('Failed to auto-create patient:', patientError)
+            // Continue anyway - appointment is more important
+          } else {
+            console.log('✅ Patient auto-created from quick record:', newPatient[0])
+          }
+        } else {
+          console.log('Patient already exists:', existingPatients[0])
+        }
+      } catch (patientError) {
+        console.warn('Patient creation error (continuing anyway):', patientError)
+      }
+
       // Close modal and redirect to recording page
       onClose()
       setPatientName("")
