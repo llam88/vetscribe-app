@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FileText, Mail, Calendar, User, Stethoscope } from "lucide-react"
+import { FileText, Mail, Calendar, User, Stethoscope, Edit } from "lucide-react"
 
 export default function PatientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
@@ -108,11 +108,17 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                     {patient.species} • Owner: {patient.owner}
                   </p>
                 </div>
-                <Button asChild>
-                  <a href={`/appointments/${appointments[0]?.id}/record`}>
-                    📝 New Recording
-                  </a>
-                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Patient
+                  </Button>
+                  <Button asChild>
+                    <a href={`/appointments/${appointments[0]?.id}/record`}>
+                      📝 New Recording
+                    </a>
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
