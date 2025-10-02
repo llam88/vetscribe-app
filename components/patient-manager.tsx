@@ -130,6 +130,7 @@ export function PatientManager() {
   const [filterStatus, setFilterStatus] = useState("all")
   const [isAddingPatient, setIsAddingPatient] = useState(false)
   const [isEditingPatient, setIsEditingPatient] = useState(false)
+  const [editingPatient, setEditingPatient] = useState<any>(null)
 
   const [newPatient, setNewPatient] = useState({
     name: "",
@@ -185,6 +186,22 @@ export function PatientManager() {
       medications: [""],
       status: "Active",
     })
+  }
+
+  const handleEditPatient = (patient: any) => {
+    setEditingPatient({ ...patient })
+    setIsEditingPatient(true)
+  }
+
+  const handleSaveEdit = () => {
+    if (editingPatient) {
+      setPatients(patients.map(p => p.id === editingPatient.id ? editingPatient : p))
+      if (selectedPatient.id === editingPatient.id) {
+        setSelectedPatient(editingPatient)
+      }
+      setIsEditingPatient(false)
+      setEditingPatient(null)
+    }
   }
 
   const handleDeletePatient = (patientId: number) => {
@@ -450,7 +467,7 @@ export function PatientManager() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleEditPatient(selectedPatient)}>
                     <Edit className="h-4 w-4 mr-2" />
                     Edit
                   </Button>
@@ -660,6 +677,115 @@ export function PatientManager() {
           </Card>
         </div>
       </div>
+
+      {/* Edit Patient Dialog */}
+      <Dialog open={isEditingPatient} onOpenChange={setIsEditingPatient}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Patient: {editingPatient?.name}</DialogTitle>
+          </DialogHeader>
+          {editingPatient && (
+            <div className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <Label htmlFor="edit-patient-name">Patient Name</Label>
+                  <Input
+                    id="edit-patient-name"
+                    value={editingPatient.name}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, name: e.target.value })}
+                    placeholder="e.g., Buddy"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-species">Species</Label>
+                  <Select
+                    value={editingPatient.species}
+                    onValueChange={(value) => setEditingPatient({ ...editingPatient, species: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select species" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Dog">Dog</SelectItem>
+                      <SelectItem value="Cat">Cat</SelectItem>
+                      <SelectItem value="Bird">Bird</SelectItem>
+                      <SelectItem value="Rabbit">Rabbit</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-breed">Breed</Label>
+                  <Input
+                    id="edit-breed"
+                    value={editingPatient.breed}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, breed: e.target.value })}
+                    placeholder="e.g., Golden Retriever"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-age">Age</Label>
+                  <Input
+                    id="edit-age"
+                    value={editingPatient.age}
+                    onChange={(e) => setEditingPatient({ ...editingPatient, age: e.target.value })}
+                    placeholder="e.g., 5 years"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="font-semibold">Owner Information</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label htmlFor="edit-owner-name">Owner Name</Label>
+                    <Input
+                      id="edit-owner-name"
+                      value={editingPatient.owner.name}
+                      onChange={(e) =>
+                        setEditingPatient({ ...editingPatient, owner: { ...editingPatient.owner, name: e.target.value } })
+                      }
+                      placeholder="e.g., John Smith"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-owner-phone">Phone</Label>
+                    <Input
+                      id="edit-owner-phone"
+                      value={editingPatient.owner.phone}
+                      onChange={(e) =>
+                        setEditingPatient({ ...editingPatient, owner: { ...editingPatient.owner, phone: e.target.value } })
+                      }
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-owner-email">Email</Label>
+                    <Input
+                      id="edit-owner-email"
+                      type="email"
+                      value={editingPatient.owner.email}
+                      onChange={(e) =>
+                        setEditingPatient({ ...editingPatient, owner: { ...editingPatient.owner, email: e.target.value } })
+                      }
+                      placeholder="owner@email.com"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4">
+                <Button variant="outline" onClick={() => setIsEditingPatient(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdit} className="bg-primary hover:bg-primary/90">
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
