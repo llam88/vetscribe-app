@@ -275,13 +275,13 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                                   ? 'Complete' : 'Partial'}
                               </div>
                             </div>
-                            <div className="flex gap-2">
-                              <Button asChild size="sm">
+                            <div className="flex flex-col sm:flex-row gap-2 w-full">
+                              <Button asChild size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
                                 <a href={`/appointments/${appointment.id}/record`}>
                                   📝 Continue Recording
                                 </a>
                               </Button>
-                              <Button asChild variant="outline" size="sm">
+                              <Button asChild variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
                                 <a href={`/appointments/${appointment.id}`}>
                                   👁️ View Details
                                 </a>
