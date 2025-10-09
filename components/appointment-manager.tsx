@@ -187,6 +187,7 @@ export function AppointmentManager() {
       setNewAppointment({
         patient_name: "",
         owner_name: "",
+        owner_phone: "",
         species: "Dog",
         breed: "",
         appointment_type: "Wellness Exam",
@@ -407,10 +408,10 @@ Your Veterinary Team`
           </Card>
         ) : (
           filteredAppointments.map((appointment) => (
-            <Card key={appointment.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
+            <Card key={appointment.id} className="hover:shadow-md transition-shadow overflow-hidden">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col gap-4">
+                  <div className="w-full">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-lg font-semibold">{appointment.patient_name}</h3>
                       <Badge className={getStatusColor(appointment.status)}>
@@ -452,17 +453,17 @@ Your Veterinary Team`
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col gap-2 w-full px-2">
+                  <div className="flex flex-col gap-2 w-full">
                     {/* Primary action: Record if not started, Continue if in progress */}
                     {!appointment.transcription ? (
                       <Button 
                         asChild
                         size="sm"
-                        className="bg-red-500 hover:bg-red-600 text-white w-full text-sm px-3 py-2"
+                        className="bg-red-500 hover:bg-red-600 text-white w-full text-xs sm:text-sm px-2 sm:px-3 py-2 min-w-0"
                       >
-                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center">
-                          <Mic className="h-4 w-4 mr-2 flex-shrink-0" />
-                          <span className="truncate">
+                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center min-w-0">
+                          <Mic className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                          <span className="truncate min-w-0">
                             {appointment.status === 'pending' ? 'Start Recording' : 'Continue'}
                           </span>
                         </a>
@@ -472,11 +473,11 @@ Your Veterinary Team`
                         asChild
                         size="sm"
                         variant="outline"
-                        className="w-full text-sm px-3 py-2"
+                        className="w-full text-xs sm:text-sm px-2 sm:px-3 py-2 min-w-0"
                       >
-                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center">
-                          <FileText className="h-4 w-4 mr-2 flex-shrink-0" />
-                          <span className="truncate">Review</span>
+                        <a href={`/appointments/${appointment.id}/record`} className="flex items-center justify-center min-w-0">
+                          <FileText className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                          <span className="truncate min-w-0">Review</span>
                         </a>
                       </Button>
                     )}
@@ -487,11 +488,11 @@ Your Veterinary Team`
                         asChild
                         variant="ghost" 
                         size="sm"
-                        className="w-full sm:w-auto text-sm px-3 py-2"
+                        className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3 py-2 min-w-0"
                       >
-                        <a href={`/appointments/${appointment.id}`} className="flex items-center justify-center">
-                          <Eye className="h-4 w-4 mr-2 flex-shrink-0" />
-                          <span className="truncate">View Details</span>
+                        <a href={`/appointments/${appointment.id}`} className="flex items-center justify-center min-w-0">
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                          <span className="truncate min-w-0">View Details</span>
                         </a>
                       </Button>
                       
