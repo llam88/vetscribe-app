@@ -314,16 +314,19 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
                 
                 return (
                   <div key={draft.appointmentId} className="border rounded-lg p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
-                        <h4 className="font-medium">{draft.patientName}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {draft.subject} • Modified {new Date(draft.lastModified).toLocaleDateString()}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                      <div className="min-w-0">
+                        <h4 className="font-medium text-sm sm:text-base truncate">{draft.patientName}</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                          {draft.subject}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Modified {new Date(draft.lastModified).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                         {sentCount > 0 && (
-                          <Badge className="bg-green-100 text-green-800">
+                          <Badge className="bg-green-100 text-green-800 text-xs">
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                             Sent {sentCount}x
                           </Badge>
@@ -416,14 +419,17 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
                   const isLoading = loadingAppointments[appointment.id]
                   
                   return (
-                    <div key={appointment.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium">{appointment.patient_name}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Owner: {appointment.owner_name} • {appointment.appointment_type} • {appointment.created_at?.split('T')[0]}
+                    <div key={appointment.id} className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50">
+                      <div className="flex flex-col gap-3">
+                        <div className="min-w-0">
+                          <h4 className="font-medium text-sm sm:text-base truncate">{appointment.patient_name}</h4>
+                          <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                            Owner: {appointment.owner_name} • {appointment.appointment_type}
                           </p>
-                          <div className="flex gap-2 mt-2">
+                          <p className="text-xs text-muted-foreground">
+                            {appointment.created_at?.split('T')[0]}
+                          </p>
+                          <div className="flex flex-wrap gap-1 sm:gap-2 mt-2">
                             {appointment.transcription && (
                               <Badge variant="secondary" className="text-xs">Transcribed</Badge>
                             )}
@@ -452,27 +458,27 @@ export function ClientCommunicationHubEnhanced({ appointments }: ClientCommunica
                           </div>
                         </div>
                         
-                        <div className="flex gap-2">
+                        <div className="w-full">
                           <Button
                             size="sm"
                             onClick={() => generateOrOpenEmail(appointment)}
                             disabled={isLoading || (!appointment.soap_note && !appointment.client_summary)}
-                            className={hasDraft ? "bg-blue-600 hover:bg-blue-700" : ""}
+                            className={`w-full sm:w-auto text-xs sm:text-sm ${hasDraft ? "bg-blue-600 hover:bg-blue-700" : ""}`}
                           >
                             {isLoading ? (
                               <>
-                                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                                Generating...
+                                <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 animate-spin flex-shrink-0" />
+                                <span className="truncate">Generating...</span>
                               </>
                             ) : hasDraft ? (
                               <>
-                                <Edit3 className="h-4 w-4 mr-2" />
-                                Edit Email
+                                <Edit3 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                                <span className="truncate">Edit Email</span>
                               </>
                             ) : (
                               <>
-                                <Zap className="h-4 w-4 mr-2" />
-                                Generate Email
+                                <Zap className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                                <span className="truncate">Generate Email</span>
                               </>
                             )}
                           </Button>
