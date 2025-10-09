@@ -267,17 +267,29 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                             <TabsTrigger value="dental" className="px-2 sm:px-3">Dental</TabsTrigger>
                           </TabsList>
 
-                          <TabsContent value="overview" className="space-y-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
-                              <div className="truncate"><strong>Type:</strong> {appointment.appointment_type}</div>
-                              <div className="truncate"><strong>Status:</strong> {appointment.status}</div>
-                              <div className="truncate"><strong>Date:</strong> {appointment.created_at?.split('T')[0]}</div>
-                              <div className="truncate"><strong>Content Status:</strong> 
-                                {appointment.transcription && appointment.soap_note && appointment.client_summary 
-                                  ? 'Complete' : 'Partial'}
+                          <TabsContent value="overview" className="space-y-4 mt-4">
+                            <div className="space-y-3">
+                              <div className="flex flex-col gap-1">
+                                <span className="text-xs text-muted-foreground">Type</span>
+                                <span className="text-sm font-medium">{appointment.appointment_type}</span>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <span className="text-xs text-muted-foreground">Status</span>
+                                <span className="text-sm font-medium">{appointment.status}</span>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <span className="text-xs text-muted-foreground">Date</span>
+                                <span className="text-sm font-medium">{appointment.created_at?.split('T')[0]}</span>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <span className="text-xs text-muted-foreground">Content Status</span>
+                                <span className="text-sm font-medium">
+                                  {appointment.transcription && appointment.soap_note && appointment.client_summary 
+                                    ? 'Complete' : 'Partial'}
+                                </span>
                               </div>
                             </div>
-                            <div className="flex flex-col sm:flex-row gap-2 w-full">
+                            <div className="flex flex-col sm:flex-row gap-2 w-full pt-2">
                               <Button asChild size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
                                 <a href={`/appointments/${appointment.id}/record`}>
                                   📝 Continue Recording
