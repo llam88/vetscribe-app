@@ -183,19 +183,19 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
           {/* Patient Overview */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-2xl">{patient.name}</CardTitle>
-                  <p className="text-muted-foreground">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="min-w-0">
+                  <CardTitle className="text-xl sm:text-2xl truncate">{patient.name}</CardTitle>
+                  <p className="text-sm sm:text-base text-muted-foreground truncate">
                     {patient.species} • Owner: {patient.owner}
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={handleEditPatient}>
-                    <Edit className="h-4 w-4 mr-2" />
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                  <Button variant="outline" size="sm" onClick={handleEditPatient} className="w-full sm:w-auto text-xs sm:text-sm">
+                    <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Edit Patient
                   </Button>
-                  <Button asChild>
+                  <Button asChild size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
                     <a href={`/appointments/${appointments[0]?.id}/record`}>
                       📝 New Recording
                     </a>
@@ -204,7 +204,7 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
                 <div><strong>Species:</strong> {patient.species}</div>
                 <div><strong>Breed:</strong> {patient.breed || 'Not specified'}</div>
                 <div><strong>Age:</strong> {patient.age || 'Not specified'}</div>
