@@ -268,11 +268,11 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
                           </TabsList>
 
                           <TabsContent value="overview" className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                              <div><strong>Type:</strong> {appointment.appointment_type}</div>
-                              <div><strong>Status:</strong> {appointment.status}</div>
-                              <div><strong>Date:</strong> {appointment.created_at?.split('T')[0]}</div>
-                              <div><strong>Content Status:</strong> 
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
+                              <div className="truncate"><strong>Type:</strong> {appointment.appointment_type}</div>
+                              <div className="truncate"><strong>Status:</strong> {appointment.status}</div>
+                              <div className="truncate"><strong>Date:</strong> {appointment.created_at?.split('T')[0]}</div>
+                              <div className="truncate"><strong>Content Status:</strong> 
                                 {appointment.transcription && appointment.soap_note && appointment.client_summary 
                                   ? 'Complete' : 'Partial'}
                               </div>
