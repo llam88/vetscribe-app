@@ -237,32 +237,34 @@ export default function PatientDetailPage({ params }: { params: Promise<{ id: st
               ) : (
                 <div className="space-y-6">
                   {appointments.map((appointment, index) => (
-                    <Card key={appointment.id} className="border-l-4 border-l-blue-500">
+                    <Card key={appointment.id} className="border-l-2 sm:border-l-4 border-l-blue-500 overflow-hidden">
                       <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <CardTitle className="text-lg">
-                              {appointment.appointment_type} - {appointment.created_at?.split('T')[0]}
-                            </CardTitle>
-                            <p className="text-sm text-muted-foreground">
-                              Appointment #{index + 1}
-                            </p>
-                          </div>
-                          <div className="flex gap-2">
-                            {appointment.transcription && <Badge variant="secondary">Transcribed</Badge>}
-                            {appointment.soap_note && <Badge className="bg-green-100 text-green-800">SOAP</Badge>}
-                            {appointment.client_summary && <Badge className="bg-blue-100 text-blue-800">Summary</Badge>}
+                        <div className="flex flex-col gap-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                            <div className="min-w-0">
+                              <CardTitle className="text-base sm:text-lg truncate">
+                                {appointment.appointment_type} - {appointment.created_at?.split('T')[0]}
+                              </CardTitle>
+                              <p className="text-xs sm:text-sm text-muted-foreground">
+                                Appointment #{index + 1}
+                              </p>
+                            </div>
+                            <div className="flex flex-wrap gap-1 sm:gap-2">
+                              {appointment.transcription && <Badge variant="secondary" className="text-xs">Transcribed</Badge>}
+                              {appointment.soap_note && <Badge className="bg-green-100 text-green-800 text-xs">SOAP</Badge>}
+                              {appointment.client_summary && <Badge className="bg-blue-100 text-blue-800 text-xs">Summary</Badge>}
+                            </div>
                           </div>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <Tabs defaultValue="overview" className="w-full">
-                          <TabsList className="grid w-full grid-cols-5">
-                            <TabsTrigger value="overview">Overview</TabsTrigger>
-                            <TabsTrigger value="transcription">Transcription</TabsTrigger>
-                            <TabsTrigger value="soap">SOAP Note</TabsTrigger>
-                            <TabsTrigger value="summary">Client Summary</TabsTrigger>
-                            <TabsTrigger value="dental">🦷 Dental Chart</TabsTrigger>
+                          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 text-xs sm:text-sm">
+                            <TabsTrigger value="overview" className="px-2 sm:px-3">Overview</TabsTrigger>
+                            <TabsTrigger value="transcription" className="px-2 sm:px-3">Transcript</TabsTrigger>
+                            <TabsTrigger value="soap" className="px-2 sm:px-3">SOAP</TabsTrigger>
+                            <TabsTrigger value="summary" className="px-2 sm:px-3">Summary</TabsTrigger>
+                            <TabsTrigger value="dental" className="px-2 sm:px-3">Dental</TabsTrigger>
                           </TabsList>
 
                           <TabsContent value="overview" className="space-y-4">
