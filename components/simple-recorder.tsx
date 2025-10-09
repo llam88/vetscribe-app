@@ -883,10 +883,10 @@ Example:
                   />
                 </div>
                 
-                <div className="flex gap-2">
-                  <Button onClick={() => navigator.clipboard.writeText(soapNote)} variant="outline">
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy SOAP Note
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                  <Button onClick={() => navigator.clipboard.writeText(soapNote)} variant="outline" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                    <Copy className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                    <span className="truncate">Copy SOAP Note</span>
                   </Button>
                   <Button 
                     onClick={async () => {
@@ -912,14 +912,15 @@ Example:
                       }
                     }}
                     variant="outline"
+                    className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3"
                   >
-                    <Download className="h-4 w-4 mr-2" />
-                    Export PDF
+                    <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                    <span className="truncate">Export PDF</span>
                   </Button>
-                  <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                    <a href="/communication">
-                      <Mail className="h-4 w-4 mr-2" />
-                      Send to Client
+                  <Button asChild className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                    <a href="/communication" className="flex items-center justify-center">
+                      <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                      <span className="truncate">Send to Client</span>
                     </a>
                   </Button>
                 </div>
@@ -974,15 +975,15 @@ Example:
                   />
                 </div>
                 
-                <div className="flex gap-2">
-                  <Button onClick={() => navigator.clipboard.writeText(clientSummary)} variant="outline">
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy Summary
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                  <Button onClick={() => navigator.clipboard.writeText(clientSummary)} variant="outline" className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                    <Copy className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                    <span className="truncate">Copy Summary</span>
                   </Button>
-                  <Button asChild className="bg-green-600 hover:bg-green-700">
-                    <a href="/communication">
-                      <Mail className="h-4 w-4 mr-2" />
-                      Email to Client
+                  <Button asChild className="bg-green-600 hover:bg-green-700 w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                    <a href="/communication" className="flex items-center justify-center">
+                      <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                      <span className="truncate">Email to Client</span>
                     </a>
                   </Button>
                 </div>
@@ -1316,18 +1317,22 @@ Example:
       {/* Quick Navigation */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex gap-4 justify-center">
-            <Button variant="outline" asChild>
-              <a href="/appointments">← Back to Appointments</a>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center w-full">
+            <Button variant="outline" asChild className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+              <a href="/appointments" className="flex items-center justify-center">
+                <span className="truncate">← Back to Appointments</span>
+              </a>
             </Button>
-            <Button variant="outline" asChild>
-              <a href="/dashboard">🏠 Dashboard</a>
+            <Button variant="outline" asChild className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+              <a href="/dashboard" className="flex items-center justify-center">
+                <span className="truncate">🏠 Dashboard</span>
+              </a>
             </Button>
             {(soapNote || clientSummary) && (
-              <Button asChild className="bg-purple-600 hover:bg-purple-700">
-                <a href="/communication">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Send Client Email
+              <Button asChild className="bg-purple-600 hover:bg-purple-700 w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-3">
+                <a href="/communication" className="flex items-center justify-center">
+                  <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 flex-shrink-0" />
+                  <span className="truncate">Send Client Email</span>
                 </a>
               </Button>
             )}
