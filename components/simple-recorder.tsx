@@ -299,8 +299,8 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       console.log('✅ Recording saved to database')
       
       toast({
-        title: "✅ Recording Saved!",
-        description: `Recording uploaded successfully (${(blob.size / 1024 / 1024).toFixed(2)} MB, ${Math.floor(duration / 60)}:${(duration % 60).toString().padStart(2, '0')})`,
+        title: "✅ Recording Saved to Cloud!",
+        description: `Recording uploaded successfully (${(blob.size / 1024 / 1024).toFixed(2)} MB, ${Math.floor(duration / 60)}:${(duration % 60).toString().padStart(2, '0')}). Accessible from any device.`,
         duration: 5000,
       })
       
