@@ -44,6 +44,9 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   const [recordingTime, setRecordingTime] = useState(0)
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const [audioUrl, setAudioUrl] = useState<string>("")
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [savedAudioUrl, setSavedAudioUrl] = useState(appointment.audio_url || "")
   
   // Content states - ALWAYS VISIBLE
   const [transcription, setTranscription] = useState(appointment.transcription || "")
@@ -83,6 +86,22 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }, [soapNote])
 
+  // Load existing recording from storage if available
+  useEffect(() => {
+    if (appointment.audio_url && !audioUrl) {
+      console.log('📥 Loading existing recording from storage:', appointment.audio_url)
+      setSavedAudioUrl(appointment.audio_url)
+      setAudioUrl(appointment.audio_url)
+      
+      // Show toast that recording is available
+      toast({
+        title: "🎙️ Recording Available",
+        description: "Previously saved recording loaded. You can play or transcribe it.",
+        duration: 3000,
+      })
+    }
+  }, [appointment.audio_url])
+
   // Timer effect for recording
   useEffect(() => {
     if (isRecording && !isPaused) {
@@ -110,6 +129,20 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   }
 
   const startRecording = async () => {
+    // Prevent recording over existing saved recording
+    if (savedAudioUrl) {
+      const confirmMessage = transcription 
+        ? 'This appointment already has a transcribed recording. To record again, please delete the existing recording first using "Delete & Re-record" button.'
+        : 'You have a saved recording from a previous session. Starting a new recording will permanently delete the old one. Are you sure?'
+      
+      if (!confirm(confirmMessage)) {
+        return
+      }
+      
+      // If they confirm, clear the saved URL so new recording can be saved
+      setSavedAudioUrl("")
+    }
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
         audio: {
@@ -144,14 +177,32 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         }
       }
       
-      mediaRecorderRef.current.onstop = () => {
+      mediaRecorderRef.current.onstop = async () => {
         const recordedBlob = new Blob(audioChunksRef.current, { type: mimeType })
+        const localUrl = URL.createObjectURL(recordedBlob)
+        
         setAudioBlob(recordedBlob)
-        setAudioUrl(URL.createObjectURL(recordedBlob))
+        setAudioUrl(localUrl)
         
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop())
           streamRef.current = null
+        }
+        
+        // AUTO-SAVE: Upload recording immediately
+        console.log('🎙️ Recording stopped, auto-uploading...')
+        toast({
+          title: "💾 Saving Recording...",
+          description: "Uploading to secure storage. Please wait...",
+          duration: 3000,
+        })
+        
+        try {
+          await uploadRecordingToStorage(recordedBlob, recordingTime)
+          console.log('✅ Auto-save completed successfully')
+        } catch (error) {
+          console.error('❌ Auto-save failed:', error)
+          // Recording still available in browser for manual transcribe
         }
       }
       
@@ -180,6 +231,148 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
       mediaRecorderRef.current.resume()
       setIsPaused(false)
+    }
+  }
+
+  // AUTO-SAVE: Upload recording to Supabase Storage
+  const uploadRecordingToStorage = async (blob: Blob, duration: number) => {
+    try {
+      setIsUploading(true)
+      setUploadProgress(10)
+      
+      const { data: { user } } = await sb.auth.getUser()
+      if (!user) {
+        throw new Error('User not authenticated')
+      }
+
+      setUploadProgress(20)
+      
+      // Create file path: {user_id}/{appointment_id}_{timestamp}.webm
+      const timestamp = new Date().getTime()
+      const fileName = `${appointment.id}_${timestamp}.webm`
+      const filePath = `${user.id}/${fileName}`
+      
+      console.log('📤 Uploading recording to storage:', filePath)
+      setUploadProgress(30)
+      
+      // Upload to Supabase Storage
+      const { data: uploadData, error: uploadError } = await sb.storage
+        .from('audio-recordings')
+        .upload(filePath, blob, {
+          contentType: 'audio/webm',
+          upsert: false
+        })
+      
+      if (uploadError) {
+        throw uploadError
+      }
+      
+      console.log('✅ Upload successful:', uploadData)
+      setUploadProgress(60)
+      
+      // Get public URL (even though bucket is private, we need the path)
+      const { data: urlData } = sb.storage
+        .from('audio-recordings')
+        .getPublicUrl(filePath)
+      
+      const audioStorageUrl = urlData.publicUrl
+      setSavedAudioUrl(audioStorageUrl)
+      setUploadProgress(80)
+      
+      // Save metadata to database
+      const { error: dbError } = await sb
+        .from('appointments')
+        .update({
+          audio_url: audioStorageUrl,
+          audio_duration: duration,
+          audio_size_bytes: blob.size,
+          recording_uploaded_at: new Date().toISOString()
+        })
+        .eq('id', appointment.id)
+      
+      if (dbError) {
+        console.error('Database save error:', dbError)
+        throw dbError
+      }
+      
+      setUploadProgress(100)
+      console.log('✅ Recording saved to database')
+      
+      toast({
+        title: "✅ Recording Saved!",
+        description: `Recording uploaded successfully (${(blob.size / 1024 / 1024).toFixed(2)} MB, ${Math.floor(duration / 60)}:${(duration % 60).toString().padStart(2, '0')})`,
+        duration: 5000,
+      })
+      
+      return audioStorageUrl
+      
+    } catch (error) {
+      console.error('❌ Upload failed:', error)
+      
+      // Retry mechanism
+      toast({
+        title: "⚠️ Upload Failed",
+        description: "Retrying upload... Please don't close the page.",
+        duration: 3000,
+      })
+      
+      // Retry once after 2 seconds
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      try {
+        // Retry upload
+        const { data: { user } } = await sb.auth.getUser()
+        if (!user) throw new Error('User not authenticated')
+        
+        const timestamp = new Date().getTime()
+        const fileName = `${appointment.id}_${timestamp}_retry.webm`
+        const filePath = `${user.id}/${fileName}`
+        
+        const { data: retryUploadData, error: retryError } = await sb.storage
+          .from('audio-recordings')
+          .upload(filePath, blob, {
+            contentType: 'audio/webm',
+            upsert: false
+          })
+        
+        if (retryError) throw retryError
+        
+        const { data: urlData } = sb.storage
+          .from('audio-recordings')
+          .getPublicUrl(filePath)
+        
+        await sb
+          .from('appointments')
+          .update({
+            audio_url: urlData.publicUrl,
+            audio_duration: duration,
+            audio_size_bytes: blob.size,
+            recording_uploaded_at: new Date().toISOString()
+          })
+          .eq('id', appointment.id)
+        
+        toast({
+          title: "✅ Recording Saved (Retry Successful)!",
+          description: "Recording uploaded after retry.",
+          duration: 5000,
+        })
+        
+        return urlData.publicUrl
+        
+      } catch (retryError) {
+        console.error('❌ Retry failed:', retryError)
+        
+        toast({
+          title: "❌ Upload Failed",
+          description: "Could not save recording. Please try transcribing to save manually.",
+          duration: 8000,
+        })
+        
+        throw retryError
+      }
+    } finally {
+      setIsUploading(false)
+      setUploadProgress(0)
     }
   }
 
@@ -627,19 +820,63 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
                   <CheckCircle2 className="h-5 w-5" />
                   Recording Complete - {formatTime(recordingTime)}
                 </h4>
+                
+                {/* Upload Progress Indicator */}
+                {isUploading && (
+                  <div className="mb-3 bg-blue-50 border border-blue-200 rounded p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+                      <span className="text-sm font-medium text-blue-900">
+                        Uploading recording... {uploadProgress}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-blue-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Saved Recording Indicator */}
+                {savedAudioUrl && !isUploading && (
+                  <div className="mb-3 bg-green-50 border border-green-200 rounded p-3">
+                    <div className="flex items-center gap-2 text-green-800">
+                      <CheckCircle2 className="h-4 w-4" />
+                      <span className="text-sm font-medium">
+                        ✅ Recording saved to cloud storage - accessible from any device
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
                 <audio controls className="w-full mb-3">
                   <source src={audioUrl} />
                 </audio>
-                <div className="flex gap-2">
-                  <Button onClick={() => {
-                    setAudioBlob(null)
-                    setAudioUrl("")
-                    setRecordingTime(0)
-                  }} variant="outline" size="sm">
-                    Record Again
-                  </Button>
-                  <Button onClick={transcribeAudio} disabled={loading} size="sm">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button 
+                    onClick={transcribeAudio} 
+                    disabled={loading || isUploading} 
+                    size="sm"
+                    className="bg-primary hover:bg-primary/90"
+                  >
                     {loading ? "Processing..." : "Generate Transcription"}
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      if (confirm('Delete this recording and start over? This cannot be undone.')) {
+                        setAudioBlob(null)
+                        setAudioUrl("")
+                        setRecordingTime(0)
+                        setSavedAudioUrl("")
+                      }
+                    }} 
+                    variant="outline" 
+                    size="sm"
+                    disabled={isUploading}
+                  >
+                    Delete & Re-record
                   </Button>
                 </div>
               </div>

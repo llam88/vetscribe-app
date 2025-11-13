@@ -39,6 +39,12 @@ CREATE TABLE public.appointments (
   dental_chart_data JSONB,
   dental_findings JSONB,
   
+  -- Audio recording storage (CRITICAL for data persistence)
+  audio_url TEXT,  -- Supabase Storage URL for recording
+  audio_duration INTEGER,  -- Recording length in seconds
+  audio_size_bytes BIGINT,  -- File size for tracking
+  recording_uploaded_at TIMESTAMP WITH TIME ZONE,  -- When recording was saved
+  
   -- Status
   status TEXT DEFAULT 'pending'
 );
@@ -244,7 +250,7 @@ CREATE POLICY "sms_logs_insert_own"
 -- 5. ADD MISSING COLUMNS TO EXISTING TABLES (if needed)
 -- ========================================
 
--- Add phone/email columns to existing appointments table if they don't exist
+-- Add phone/email/audio columns to existing appointments table if they don't exist
 DO $$ 
 BEGIN
   -- Add owner_phone column if it doesn't exist
@@ -273,6 +279,62 @@ BEGIN
     RAISE NOTICE 'Added owner_email column to appointments table';
   ELSE
     RAISE NOTICE 'owner_email column already exists';
+  END IF;
+
+  -- Add audio_url column if it doesn't exist (CRITICAL for recording persistence)
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'appointments' 
+    AND column_name = 'audio_url'
+  ) THEN
+    ALTER TABLE public.appointments 
+    ADD COLUMN audio_url TEXT;
+    
+    RAISE NOTICE 'Added audio_url column to appointments table';
+  ELSE
+    RAISE NOTICE 'audio_url column already exists';
+  END IF;
+
+  -- Add audio_duration column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'appointments' 
+    AND column_name = 'audio_duration'
+  ) THEN
+    ALTER TABLE public.appointments 
+    ADD COLUMN audio_duration INTEGER;
+    
+    RAISE NOTICE 'Added audio_duration column to appointments table';
+  ELSE
+    RAISE NOTICE 'audio_duration column already exists';
+  END IF;
+
+  -- Add audio_size_bytes column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'appointments' 
+    AND column_name = 'audio_size_bytes'
+  ) THEN
+    ALTER TABLE public.appointments 
+    ADD COLUMN audio_size_bytes BIGINT;
+    
+    RAISE NOTICE 'Added audio_size_bytes column to appointments table';
+  ELSE
+    RAISE NOTICE 'audio_size_bytes column already exists';
+  END IF;
+
+  -- Add recording_uploaded_at column if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'appointments' 
+    AND column_name = 'recording_uploaded_at'
+  ) THEN
+    ALTER TABLE public.appointments 
+    ADD COLUMN recording_uploaded_at TIMESTAMP WITH TIME ZONE;
+    
+    RAISE NOTICE 'Added recording_uploaded_at column to appointments table';
+  ELSE
+    RAISE NOTICE 'recording_uploaded_at column already exists';
   END IF;
 END $$;
 
@@ -342,11 +404,17 @@ END $$;
 
 SELECT 'SwiftVet database setup complete! ✅ 
 
-✅ Appointments table (with SMS phone numbers)
+✅ Appointments table (with SMS + audio recording support)
+✅ Audio recording columns (for persistent storage)
 ✅ Patients table (with contact info) 
 ✅ Profiles table (with email configuration)
 ✅ SMS logs table (for message tracking)
 ✅ Row Level Security enabled
 ✅ All policies configured
 
-Your SwiftVet app is now ready for SMS functionality!' as message;
+NEXT STEPS:
+1. Create Supabase Storage bucket: "audio-recordings" 
+2. Set bucket to PRIVATE (users access own recordings only)
+3. Configure RLS policies for storage bucket
+
+Your SwiftVet app is ready for auto-save recording functionality!' as message;
