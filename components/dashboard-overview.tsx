@@ -268,7 +268,7 @@ export function DashboardOverview({ appointments, patients, stats }: DashboardOv
               </div>
             </Link>
 
-            <Link href="/data-management" className="block">
+            <Link href="/patients" className="block">
               <div className="flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors group cursor-pointer">
                 <div className="rounded-full bg-green-100 p-2 group-hover:bg-green-200">
                   <FileText className="h-4 w-4 text-green-600" />
