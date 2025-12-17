@@ -45,8 +45,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/notes" className="hover:text-foreground transition-colors">
-                  SOAP Notes & Charts
+                <Link href="/templates" className="hover:text-foreground transition-colors">
+                  Templates & Charts
                 </Link>
               </li>
             </ul>
