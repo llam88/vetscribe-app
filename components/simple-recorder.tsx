@@ -153,17 +153,28 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   useEffect(() => {
     let periodicSaveInterval: NodeJS.Timeout | null = null
     
-    if (isRecording) {
-      periodicSaveInterval = setInterval(() => {
+    if (isRecording && !isPaused) {
+      periodicSaveInterval = setInterval(async () => {
         console.log('⏰ Periodic auto-save triggered...')
+        
+        // Request current data without stopping
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+          mediaRecorderRef.current.requestData()
+          
+          // Wait for data to be available
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
         
         if (audioChunksRef.current.length > 0) {
           const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+          console.log(`⏰ Periodic save - blob size: ${(currentBlob.size / 1024).toFixed(2)} KB`)
           
-          // Silent background save
-          uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
-            console.error('⚠️ Periodic auto-save failed:', error)
-          })
+          // Silent background save (only if blob has content)
+          if (currentBlob.size > 100) {
+            uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
+              console.error('⚠️ Periodic auto-save failed:', error)
+            })
+          }
         }
       }, 30000) // Every 30 seconds
     }
@@ -173,25 +184,19 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         clearInterval(periodicSaveInterval)
       }
     }
-  }, [isRecording, recordingTime])
+  }, [isRecording, isPaused, recordingTime])
 
   // Emergency save on page close/refresh
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isRecording || isPaused) {
-        // Try to save before page closes
-        if (audioChunksRef.current.length > 0) {
-          const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-          
-          // Attempt synchronous save (limited success, but better than nothing)
-          uploadRecordingToStorage(currentBlob, recordingTime).catch(() => {
-            console.error('⚠️ Emergency save on page close failed')
-          })
-        }
+        // Show warning to user - especially important on mobile
+        const message = isUploading 
+          ? '⚠️ Recording is currently being saved! Closing now will lose your recording. Please wait...'
+          : '⚠️ You have an unsaved recording! Please click PAUSE and wait for "Recording Saved" before closing.'
         
-        // Show warning to user
         e.preventDefault()
-        e.returnValue = 'You have an active recording. It will be auto-saved, but are you sure you want to leave?'
+        e.returnValue = message
         return e.returnValue
       }
     }
@@ -201,7 +206,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [isRecording, isPaused, recordingTime])
+  }, [isRecording, isPaused, isUploading])
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -306,19 +311,67 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
 
   const pauseRecording = async () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      // CRITICAL: Request final data chunk before pausing!
+      // Without this, the last few seconds of audio are missing
+      mediaRecorderRef.current.requestData()
+      
+      // Wait a moment for the data to be available
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
       mediaRecorderRef.current.pause()
       setIsPaused(true)
       
-      // AUTO-SAVE on pause (critical for data safety!)
+      // AUTO-SAVE on pause (critical for mobile!)
       console.log('⏸️ Paused - creating backup save...')
+      console.log(`📊 Audio chunks available: ${audioChunksRef.current.length}`)
       
       // Create a blob from current chunks
       if (audioChunksRef.current.length > 0) {
         const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        console.log(`📦 Blob size: ${(currentBlob.size / 1024).toFixed(2)} KB`)
         
-        // Save in background (don't block the UI)
-        uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
+        // Verify we actually have audio data
+        if (currentBlob.size < 100) {
+          console.error('❌ Blob is too small - likely empty recording!')
+          toast({
+            title: "⚠️ Recording Issue",
+            description: "Recording appears empty. Please try again.",
+            duration: 5000,
+          })
+          return
+        }
+        
+        // IMPORTANT: WAIT for save to complete (critical on mobile)
+        // Mobile browsers kill background tasks aggressively
+        try {
+          toast({
+            title: "💾 Saving...",
+            description: "Please wait while we save your recording...",
+            duration: 2000,
+          })
+          
+          await uploadRecordingToStorage(currentBlob, recordingTime)
+          console.log('✅ Pause auto-save completed successfully')
+          
+          toast({
+            title: "✅ Recording Saved!",
+            description: "Safe to close the app now.",
+            duration: 3000,
+          })
+        } catch (error) {
           console.error('⚠️ Pause auto-save failed (will retry on stop):', error)
+          toast({
+            title: "⚠️ Save Issue",
+            description: "Will retry saving. Please don't close yet.",
+            duration: 3000,
+          })
+        }
+      } else {
+        console.error('❌ No audio chunks available!')
+        toast({
+          title: "⚠️ No Audio Data",
+          description: "Recording is empty. Please record for at least 1 second.",
+          duration: 5000,
         })
       }
     }
@@ -902,7 +955,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
             {/* Recording Controls */}
             <div className="bg-gray-50 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <div className={`w-4 h-4 rounded-full ${
                     isRecording ? (isPaused ? 'bg-yellow-500' : 'bg-red-500 animate-pulse') : 'bg-gray-400'
                   }`}></div>
@@ -912,6 +965,11 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
                   <Badge variant={isRecording ? (isPaused ? "secondary" : "destructive") : "outline"}>
                     {isRecording ? (isPaused ? "Paused" : "Recording") : "Ready"}
                   </Badge>
+                  {isUploading && (
+                    <Badge variant="default" className="bg-blue-500 animate-pulse">
+                      💾 Saving... {uploadProgress}%
+                    </Badge>
+                  )}
                 </div>
               </div>
 
@@ -928,16 +986,31 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
                 ) : (
                   <>
                     {!isPaused ? (
-                      <Button onClick={pauseRecording} variant="outline" size="lg">
-                        Pause
+                      <Button 
+                        onClick={pauseRecording} 
+                        variant="outline" 
+                        size="lg"
+                        disabled={isUploading}
+                      >
+                        {isUploading ? "Saving..." : "Pause"}
                       </Button>
                     ) : (
-                      <Button onClick={resumeRecording} className="bg-blue-500 hover:bg-blue-600 text-white" size="lg">
+                      <Button 
+                        onClick={resumeRecording} 
+                        className="bg-blue-500 hover:bg-blue-600 text-white" 
+                        size="lg"
+                        disabled={isUploading}
+                      >
                         Resume
                       </Button>
                     )}
-                    <Button onClick={stopRecording} variant="destructive" size="lg">
-                      Stop Recording
+                    <Button 
+                      onClick={stopRecording} 
+                      variant="destructive" 
+                      size="lg"
+                      disabled={isUploading}
+                    >
+                      {isUploading ? "Saving..." : "Stop Recording"}
                     </Button>
                   </>
                 )}
