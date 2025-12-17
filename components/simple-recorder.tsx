@@ -150,51 +150,15 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }, [isRecording, isPaused])
 
-  // Periodic auto-save during recording (every 30 seconds)
-  useEffect(() => {
-    let periodicSaveInterval: NodeJS.Timeout | null = null
-    
-    if (isRecording && !isPaused) {
-      periodicSaveInterval = setInterval(async () => {
-        console.log('⏰ Periodic auto-save triggered...')
-        
-        // Request current data without stopping
-        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-          mediaRecorderRef.current.requestData()
-          
-          // Wait for data to be available
-          await new Promise(resolve => setTimeout(resolve, 100))
-        }
-        
-        if (audioChunksRef.current.length > 0) {
-          const currentBlob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current })
-          console.log(`⏰ Periodic save - blob size: ${(currentBlob.size / 1024).toFixed(2)} KB, mimeType: ${mimeTypeRef.current}`)
-          
-          // Silent background save (only if blob has content)
-          if (currentBlob.size > 100) {
-            uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
-              console.error('⚠️ Periodic auto-save failed:', error)
-            })
-          }
-        }
-      }, 30000) // Every 30 seconds
-    }
-    
-    return () => {
-      if (periodicSaveInterval) {
-        clearInterval(periodicSaveInterval)
-      }
-    }
-  }, [isRecording, isPaused, recordingTime])
+  // NOTE: Periodic auto-save disabled because WebM files created mid-recording
+  // are unplayable (missing duration metadata). Only STOP properly finalizes files.
 
-  // Emergency save on page close/refresh
+  // Warning on page close/refresh - recordings only save on STOP
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isRecording || isPaused) {
-        // Show warning to user - especially important on mobile
-        const message = isUploading 
-          ? '⚠️ Recording is currently being saved! Closing now will lose your recording. Please wait...'
-          : '⚠️ You have an unsaved recording! Please click PAUSE and wait for "Recording Saved" before closing.'
+        // CRITICAL WARNING: User must stop recording to save!
+        const message = '🚨 You have an UNSAVED recording! Click "Stop Recording" before leaving to save your work. Closing now will LOSE your recording!'
         
         e.preventDefault()
         e.returnValue = message
@@ -207,7 +171,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [isRecording, isPaused, isUploading])
+  }, [isRecording, isPaused])
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
@@ -314,71 +278,19 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }
 
-  const pauseRecording = async () => {
+  const pauseRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-      // CRITICAL: Request final data chunk before pausing!
-      // Without this, the last few seconds of audio are missing
-      mediaRecorderRef.current.requestData()
-      
-      // Wait a moment for the data to be available
-      await new Promise(resolve => setTimeout(resolve, 100))
-      
       mediaRecorderRef.current.pause()
       setIsPaused(true)
       
-      // AUTO-SAVE on pause (critical for mobile!)
-      console.log('⏸️ Paused - creating backup save...')
-      console.log(`📊 Audio chunks available: ${audioChunksRef.current.length}`)
+      console.log('⏸️ Recording paused (not stopped)')
       
-      // Create a blob from current chunks using the CORRECT mimeType
-      if (audioChunksRef.current.length > 0) {
-        const currentBlob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current })
-        console.log(`📦 Blob size: ${(currentBlob.size / 1024).toFixed(2)} KB, mimeType: ${mimeTypeRef.current}`)
-        
-        // Verify we actually have audio data
-        if (currentBlob.size < 100) {
-          console.error('❌ Blob is too small - likely empty recording!')
-          toast({
-            title: "⚠️ Recording Issue",
-            description: "Recording appears empty. Please try again.",
-            duration: 5000,
-          })
-          return
-        }
-        
-        // IMPORTANT: WAIT for save to complete (critical on mobile)
-        // Mobile browsers kill background tasks aggressively
-        try {
-          toast({
-            title: "💾 Saving...",
-            description: "Please wait while we save your recording...",
-            duration: 2000,
-          })
-          
-          await uploadRecordingToStorage(currentBlob, recordingTime)
-          console.log('✅ Pause auto-save completed successfully')
-          
-          toast({
-            title: "✅ Recording Saved!",
-            description: "Safe to close the app now.",
-            duration: 3000,
-          })
-        } catch (error) {
-          console.error('⚠️ Pause auto-save failed (will retry on stop):', error)
-          toast({
-            title: "⚠️ Save Issue",
-            description: "Will retry saving. Please don't close yet.",
-            duration: 3000,
-          })
-        }
-      } else {
-        console.error('❌ No audio chunks available!')
-        toast({
-          title: "⚠️ No Audio Data",
-          description: "Recording is empty. Please record for at least 1 second.",
-          duration: 5000,
-        })
-      }
+      // Show warning - pause does NOT save!
+      toast({
+        title: "⏸️ Recording Paused",
+        description: "⚠️ Click 'STOP RECORDING' before closing to save your work!",
+        duration: 5000,
+      })
     }
   }
 
@@ -386,6 +298,12 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'paused') {
       mediaRecorderRef.current.resume()
       setIsPaused(false)
+      
+      toast({
+        title: "▶️ Recording Resumed",
+        description: "Recording continues...",
+        duration: 2000,
+      })
     }
   }
 
