@@ -149,6 +149,60 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }, [isRecording, isPaused])
 
+  // Periodic auto-save during recording (every 30 seconds)
+  useEffect(() => {
+    let periodicSaveInterval: NodeJS.Timeout | null = null
+    
+    if (isRecording) {
+      periodicSaveInterval = setInterval(() => {
+        console.log('⏰ Periodic auto-save triggered...')
+        
+        if (audioChunksRef.current.length > 0) {
+          const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+          
+          // Silent background save
+          uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
+            console.error('⚠️ Periodic auto-save failed:', error)
+          })
+        }
+      }, 30000) // Every 30 seconds
+    }
+    
+    return () => {
+      if (periodicSaveInterval) {
+        clearInterval(periodicSaveInterval)
+      }
+    }
+  }, [isRecording, recordingTime])
+
+  // Emergency save on page close/refresh
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isRecording || isPaused) {
+        // Try to save before page closes
+        if (audioChunksRef.current.length > 0) {
+          const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+          
+          // Attempt synchronous save (limited success, but better than nothing)
+          uploadRecordingToStorage(currentBlob, recordingTime).catch(() => {
+            console.error('⚠️ Emergency save on page close failed')
+          })
+        }
+        
+        // Show warning to user
+        e.preventDefault()
+        e.returnValue = 'You have an active recording. It will be auto-saved, but are you sure you want to leave?'
+        return e.returnValue
+      }
+    }
+    
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [isRecording, isPaused, recordingTime])
+
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -250,10 +304,23 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     }
   }
 
-  const pauseRecording = () => {
+  const pauseRecording = async () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.pause()
       setIsPaused(true)
+      
+      // AUTO-SAVE on pause (critical for data safety!)
+      console.log('⏸️ Paused - creating backup save...')
+      
+      // Create a blob from current chunks
+      if (audioChunksRef.current.length > 0) {
+        const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        
+        // Save in background (don't block the UI)
+        uploadRecordingToStorage(currentBlob, recordingTime).catch(error => {
+          console.error('⚠️ Pause auto-save failed (will retry on stop):', error)
+        })
+      }
     }
   }
 
