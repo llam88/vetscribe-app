@@ -38,6 +38,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   const streamRef = useRef<MediaStream | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const mimeTypeRef = useRef<string>('audio/webm') // Store actual mime type used
   
   const [isRecording, setIsRecording] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
@@ -166,8 +167,8 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         }
         
         if (audioChunksRef.current.length > 0) {
-          const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-          console.log(`⏰ Periodic save - blob size: ${(currentBlob.size / 1024).toFixed(2)} KB`)
+          const currentBlob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current })
+          console.log(`⏰ Periodic save - blob size: ${(currentBlob.size / 1024).toFixed(2)} KB, mimeType: ${mimeTypeRef.current}`)
           
           // Silent background save (only if blob has content)
           if (currentBlob.size > 100) {
@@ -253,6 +254,10 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         }
       }
       
+      // Store the mimeType for use in pause/periodic saves
+      mimeTypeRef.current = mimeType
+      console.log('🎤 Recording with mimeType:', mimeType)
+      
       mediaRecorderRef.current = new MediaRecorder(stream, {
         mimeType,
         audioBitsPerSecond: 128000
@@ -325,10 +330,10 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       console.log('⏸️ Paused - creating backup save...')
       console.log(`📊 Audio chunks available: ${audioChunksRef.current.length}`)
       
-      // Create a blob from current chunks
+      // Create a blob from current chunks using the CORRECT mimeType
       if (audioChunksRef.current.length > 0) {
-        const currentBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-        console.log(`📦 Blob size: ${(currentBlob.size / 1024).toFixed(2)} KB`)
+        const currentBlob = new Blob(audioChunksRef.current, { type: mimeTypeRef.current })
+        console.log(`📦 Blob size: ${(currentBlob.size / 1024).toFixed(2)} KB, mimeType: ${mimeTypeRef.current}`)
         
         // Verify we actually have audio data
         if (currentBlob.size < 100) {
@@ -405,12 +410,15 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       console.log('📤 Uploading recording to storage:', filePath)
       setUploadProgress(30)
       
-      // Upload to Supabase Storage
+      // Upload to Supabase Storage with correct content type
+      const contentType = mimeTypeRef.current || 'audio/webm'
+      console.log('📤 Uploading with contentType:', contentType)
+      
       const { data: uploadData, error: uploadError } = await sb.storage
         .from('audio-recordings')
         .upload(filePath, blob, {
-          contentType: 'audio/webm',
-          upsert: false
+          contentType: contentType,
+          upsert: true  // Allow overwriting for retry saves
         })
       
       if (uploadError) {
@@ -478,8 +486,8 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         const { data: retryUploadData, error: retryError } = await sb.storage
           .from('audio-recordings')
           .upload(filePath, blob, {
-            contentType: 'audio/webm',
-            upsert: false
+            contentType: mimeTypeRef.current || 'audio/webm',
+            upsert: true
           })
         
         if (retryError) throw retryError
