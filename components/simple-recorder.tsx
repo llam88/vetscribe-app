@@ -88,18 +88,48 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
 
   // Load existing recording from storage if available
   useEffect(() => {
-    if (appointment.audio_url && !audioUrl) {
-      console.log('📥 Loading existing recording from storage:', appointment.audio_url)
-      setSavedAudioUrl(appointment.audio_url)
-      setAudioUrl(appointment.audio_url)
-      
-      // Show toast that recording is available
-      toast({
-        title: "🎙️ Recording Available",
-        description: "Previously saved recording loaded. You can play or transcribe it.",
-        duration: 3000,
-      })
+    const loadExistingRecording = async () => {
+      if (appointment.audio_url && !audioUrl) {
+        console.log('📥 Loading existing recording from storage:', appointment.audio_url)
+        setSavedAudioUrl(appointment.audio_url)
+        
+        // Extract file path from stored URL or use directly if it's a path
+        let filePath = appointment.audio_url
+        
+        // If it's a full URL, extract the path
+        if (filePath.includes('/audio-recordings/')) {
+          filePath = filePath.split('/audio-recordings/')[1]
+        }
+        
+        // Generate signed URL for private bucket access
+        try {
+          const { data: signedUrlData, error: signedUrlError } = await sb.storage
+            .from('audio-recordings')
+            .createSignedUrl(filePath, 3600) // 1 hour expiry
+          
+          if (signedUrlError) {
+            console.error('❌ Error creating signed URL:', signedUrlError)
+            // Fallback to stored URL in case bucket is public
+            setAudioUrl(appointment.audio_url)
+          } else if (signedUrlData?.signedUrl) {
+            console.log('✅ Generated signed URL for playback')
+            setAudioUrl(signedUrlData.signedUrl)
+          }
+        } catch (error) {
+          console.error('❌ Error loading recording:', error)
+          setAudioUrl(appointment.audio_url)
+        }
+        
+        // Show toast that recording is available
+        toast({
+          title: "🎙️ Recording Available",
+          description: "Previously saved recording loaded. You can play or transcribe it.",
+          duration: 3000,
+        })
+      }
     }
+    
+    loadExistingRecording()
   }, [appointment.audio_url])
 
   // Timer effect for recording
@@ -270,20 +300,17 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
       console.log('✅ Upload successful:', uploadData)
       setUploadProgress(60)
       
-      // Get public URL (even though bucket is private, we need the path)
-      const { data: urlData } = sb.storage
-        .from('audio-recordings')
-        .getPublicUrl(filePath)
-      
-      const audioStorageUrl = urlData.publicUrl
-      setSavedAudioUrl(audioStorageUrl)
+      // Store the file path (not public URL) for signed URL generation later
+      // This is critical for private bucket access
+      const audioStoragePath = filePath
+      setSavedAudioUrl(audioStoragePath)
       setUploadProgress(80)
       
-      // Save metadata to database
+      // Save file path to database (we'll generate signed URLs when needed)
       const { error: dbError } = await sb
         .from('appointments')
         .update({
-          audio_url: audioStorageUrl,
+          audio_url: audioStoragePath,  // Store path, not URL
           audio_duration: duration,
           audio_size_bytes: blob.size,
           recording_uploaded_at: new Date().toISOString()
@@ -304,7 +331,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         duration: 5000,
       })
       
-      return audioStorageUrl
+      return audioStoragePath
       
     } catch (error) {
       console.error('❌ Upload failed:', error)
@@ -337,19 +364,18 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
         
         if (retryError) throw retryError
         
-        const { data: urlData } = sb.storage
-          .from('audio-recordings')
-          .getPublicUrl(filePath)
-        
+        // Store file path for signed URL generation
         await sb
           .from('appointments')
           .update({
-            audio_url: urlData.publicUrl,
+            audio_url: filePath,  // Store path, not URL
             audio_duration: duration,
             audio_size_bytes: blob.size,
             recording_uploaded_at: new Date().toISOString()
           })
           .eq('id', appointment.id)
+        
+        setSavedAudioUrl(filePath)
         
         toast({
           title: "✅ Recording Saved (Retry Successful)!",
@@ -357,7 +383,7 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
           duration: 5000,
         })
         
-        return urlData.publicUrl
+        return filePath
         
       } catch (retryError) {
         console.error('❌ Retry failed:', retryError)
@@ -401,7 +427,49 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
   }
 
   const transcribeAudio = async () => {
-    const audioToProcess = audioBlob || uploadedFile
+    let audioToProcess: Blob | File | null = audioBlob || uploadedFile
+    
+    // If no blob in memory but we have a saved URL, fetch from storage
+    if (!audioToProcess && savedAudioUrl) {
+      console.log('📥 Fetching audio from storage for transcription...')
+      try {
+        // Generate signed URL if we have a path
+        let fetchUrl = audioUrl
+        if (!fetchUrl || fetchUrl.includes('403')) {
+          // Re-generate signed URL
+          let filePath = savedAudioUrl
+          if (filePath.includes('/audio-recordings/')) {
+            filePath = filePath.split('/audio-recordings/')[1]
+          }
+          
+          const { data: signedUrlData, error: signedUrlError } = await sb.storage
+            .from('audio-recordings')
+            .createSignedUrl(filePath, 3600)
+          
+          if (signedUrlError || !signedUrlData?.signedUrl) {
+            throw new Error('Could not access stored recording')
+          }
+          
+          fetchUrl = signedUrlData.signedUrl
+          setAudioUrl(fetchUrl)
+        }
+        
+        // Fetch the audio file
+        const response = await fetch(fetchUrl)
+        if (!response.ok) {
+          throw new Error('Failed to fetch stored recording')
+        }
+        
+        audioToProcess = await response.blob()
+        console.log('✅ Audio fetched from storage:', audioToProcess.size, 'bytes')
+        
+      } catch (error) {
+        console.error('❌ Error fetching stored audio:', error)
+        alert('Could not load the stored recording. Please try recording again.')
+        return
+      }
+    }
+    
     if (!audioToProcess) {
       alert('Please record audio or upload a file first')
       return
@@ -410,13 +478,9 @@ export function SimpleRecorder({ appointment }: SimpleRecorderProps) {
     setLoading(true)
     try {
       const fd = new FormData()
-      if (audioBlob) {
-        fd.append("audio", audioBlob, "recording.webm")
-      } else if (uploadedFile) {
-        fd.append("audio", uploadedFile)
-      }
+      fd.append("audio", audioToProcess, audioToProcess instanceof File ? audioToProcess.name : "recording.webm")
       
-      console.log('Starting transcription for:', audioBlob ? 'live recording' : uploadedFile?.name)
+      console.log('Starting transcription for:', audioBlob ? 'live recording' : uploadedFile ? uploadedFile.name : 'stored recording')
       
       const response = await fetch("/api/transcribe", { method: "POST", body: fd })
       const result = await response.json()
