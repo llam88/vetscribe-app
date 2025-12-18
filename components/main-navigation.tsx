@@ -18,6 +18,7 @@ import {
   X,
   Lightbulb
 } from "lucide-react"
+import { BrandLogo } from "./logo"
 
 type NavigationItem = {
   href: string
@@ -48,9 +49,9 @@ export function MainNavigation() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <Stethoscope className="h-5 w-5 text-primary-foreground" />
-              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+              <BrandLogo />
+            </div>
               <span className="text-xl font-bold text-foreground">SwiftVet</span>
             </Link>
           </div>
