@@ -1,5 +1,6 @@
-import { Stethoscope } from "lucide-react"
+// import { Stethoscope } from "lucide-react"
 import Link from "next/link"
+import { BrandLogo } from "./logo"
 
 export function Footer() {
   return (
@@ -8,8 +9,8 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <Stethoscope className="h-5 w-5 text-primary-foreground" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <BrandLogo />
               </div>
               <span className="text-xl font-bold text-foreground">SwiftVet</span>
             </div>
